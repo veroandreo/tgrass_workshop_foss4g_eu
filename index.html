@@ -151,22 +151,42 @@ Defined by start time
 -->
     <h4>Workflow overview</h4>
     <ol>
-    <li>t.connect</li>
-    <li>t.create</li>
-    <li>t.register</li>
-    <li>t.info, t.list, t.rast|vect.list</li>
-    <li>Analysis: t.rast.series, t.rast.aggregate, t.rast.accumulate, t.rast.algebra, etc.</li> 
-<!--
-1. Set and connect the temporal database: t.connect
-2. Creation of the STDS: t.create
-3. Registering maps in the STDS: t.register
-4. Check info, integrity and validity of STDS: t.list, t.info, t.topology
-4'. Edition, updating, removal of maps and/or STDS: t.remove, t.support
-5. Listing maps, selections, univariate statistics: t.rast.list/t.vect.list, t.rast.univar/t.vect.univar, t.select, t.rast.extract/t.vect.extract, etc.
-6. Spatio-temporal processing: aggregations, accumulations, smoothing, gap-filling, spatio-temporal algebra, etc.
-7. Visualization
-8. Exporting 
--->
+    <li>Set and connect the temporal database (mapset specific): <a href="https://grass.osgeo.org/grass72/manuals/t.connect.html">t.connect</a></li>
+    <li>Create the STDS (raster, vector or raster 3D): <a href="https://grass.osgeo.org/grass72/manuals/t.create.html">t.create</a></li>
+    <li>Assign timestamps to maps and register them in the STDS: <a href="https://grass.osgeo.org/grass72/manuals/t.register.html">t.register</a></li>
+    <li>Check info, integrity and validity of STDS: <a href="https://grass.osgeo.org/grass72/manuals/t.list.html">t.list</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.info.html">t.info</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.topology.html">t.topology</a></li>
+    <li>Edition, updating, unregistering, removal of maps and/or STDS: <a href="https://grass.osgeo.org/grass72/manuals/t.rename.html">t.rename</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.remove.html">t.remove</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.support.html">t.support</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.unregister.html">t.unregister</a></li>
+    <li>Listing maps, selections, univariate statistics:
+    <a href="https://grass.osgeo.org/grass72/manuals/t.rast.list.html">t.rast.list</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.vect.list.html">t.vect.list</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.select.html">t.select</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.rast.extract.html">t.rast.extract</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.vect.extract.html">t.vect.extract</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.rast.univar.html">t.rast.univar</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/t.vect.univar.html">t.vect.univar</a></li>
+    <li>Spatio-temporal processing (a bit raster biased):
+        <ul>
+            <li>data aggregation: <a href="https://grass.osgeo.org/grass72/manuals/t.rast.series.html">t.rast.series</a>,
+            <a href="https://grass.osgeo.org/grass72/manuals/t.rast.aggregate.html">t.rast.aggregate</a>,
+            <a href="https://grass.osgeo.org/grass72/manuals/t.rast.aggregate.ds.html">t.rast.aggregate.ds</a></li>
+            <li>data accumulation: <a href="https://grass.osgeo.org/grass72/manuals/t.rast.accumulate.html">t.rast.accumulate</a>,
+            <a href="https://grass.osgeo.org/grass72/manuals/t.rast.accumulate.html">t.rast.accumulate</a>,</li>
+            <li>gap-filling and smoothing: <a href="https://grass.osgeo.org/grass72/manuals/t.rast.gapfill.html">t.rast.gapfill</a>,
+            <a href="https://grass.osgeo.org/grass72/manuals/t.rast.neighbors.html">t.rast.neighbors</a></li>
+            <li>spatio-temporal algebra: <a href="https://grass.osgeo.org/grass72/manuals/t.rast.mapcalc.html">t.rast.mapcalc</a>,
+            <a href="https://grass.osgeo.org/grass72/manuals/t.rast.algebra.html">t.rast.algebra</a></li>
+        </ul>
+    </li>
+    <li>Visualization: <a href="https://grass.osgeo.org/grass72/manuals/g.gui.timeline.html">g.gui.timeline</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/g.gui.tplot.html">g.gui.tplot</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/g.gui.animation.html">g.gui.animation</a>,
+    <a href="https://grass.osgeo.org/grass72/manuals/g.gui.mapswipe.html">g.gui.mapswipe</a>
+    </li>
     </ol>
     <h2>Hands-on to raster time series processing</h2>
     <h3>Get MODIS data</h3>
