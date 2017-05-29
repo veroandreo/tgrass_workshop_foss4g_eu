@@ -195,12 +195,17 @@ Defined by start time
     your_NASA_user
     your_NASA_password
 <pre><code class="neutral">
-# Download data: MOD11B3 2015-2016, tile h11v05 
+r.modis.download -g settings=$HOME/gisdata/SETTING product=lst_terra_monthly_5600 tiles=h11v05 startday="2015-01-01" endday="2016-12-31" folder=$HOME/lst_monthly
+r.modis.import -w files=$HOME/lst_monthly/listfileMOD11B3.006.txt spectral="( 1 1 0 0 1 1 )" outfile=$HOME/lst_monthly/monthly_lst_to_register.txt
+g.list type=raster patern="MOD11B3*"
+</code>
+<code class="bash">
+# Download data: MOD11B3 2015-2016, tile h11v05
 r.modis.download -g settings=$HOME/gisdata/SETTING \
 product=lst_terra_monthly_5600 \
 tiles=h11v05 startday="2015-01-01" endday="2016-12-31" \
 folder=$HOME/lst_monthly
-  
+
 # Reproject and import maps into NC Location (Day and Night)
 r.modis.import -w files=$HOME/lst_monthly/listfileMOD11B3.006.txt \
 spectral="( 1 1 0 0 1 1 )" \
@@ -208,7 +213,32 @@ outfile=$HOME/lst_monthly/monthly_lst_to_register.txt
 
 # Check list of imported maps
 g.list type=raster patern="MOD11B3*"
+</code>
+<code class="python">
+# import the needed libraries
+import grass.pygrass.modules as gmod
+import os
+from subprocess import PIPE
+# set variables
+# home
+HOME=os.path.expanduser('~')
+# stdout
+
+# Download data: MOD11B3 2015-2016, tile h11v05
+gmod.Module("r.modis.download", flags="g", settings=os.path.join(HOME, 'gisdata', 'SETTING'),
+product="lst_terra_monthly_5600", tiles="h11v05", startday="2015-01-01",
+endday="2016-12-31", folder=os.path.join(HOME, lst_monthly)
+
+# Reproject and import maps into NC Location (Day and Night)
+gmod.Module("r.modis.import", flags="w" files=os.path.join(HOME, 'lst_monthly', 'listfileMOD11B3.006.txt'),
+spectral="( 1 1 0 0 1 1 )", outfile=os.path.join(HOME, 'lst_monthly', 'monthly_lst_to_register.txt'))
+
+# Check list of imported maps
+
+glist = gmod.Module("g.list", type="raster", patern="MOD11B3*", stdout_=PIPE, stderr_=PIPE)
+print(glist.outputs["stdout"].value)
 </code></pre>
+
 <p>bla bla bla</p>
 <p>
 <pre><code class="neutral">
