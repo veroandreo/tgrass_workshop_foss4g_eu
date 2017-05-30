@@ -265,16 +265,18 @@ glist = gmod.Module("g.list", type="raster", patern="MOD11B3*", stdout_=PIPE, st
 print(glist.outputs["stdout"].value)
 </code></pre>
 
-<p>bla bla bla</p>
+<p>We will now visualize one image and add different map decorations</p>
 <p>
 <pre><code class="neutral">
-# Visualize one image and add map decorations
-# change color palette
+# change color palette from grey to viridis
 r.colors MOD11B3.A2015060.h11v05.single_LST_Day_6km color=viridis
 # set region to NC (g.region -d)
-g.region vector=nc_state
+g.region -p vector=nc_state
 # optionally, to the full extent of one of the raster maps
-g.region raster=MOD11B3.A2015060.h11v05.single_LST_Day_6km
+g.region -p raster=MOD11B3.A2015060.h11v05.single_LST_Day_6km
+</code></pre>
+<p>We can open a monitor and run the commands from the command line or do everything in the main GUI and copy the commands for future reference or replication.</p>
+<pre><code class="neutral">
 # open a monitor
 d.mon wx0
 # display raster
@@ -291,8 +293,7 @@ d.northarrow style=1b text_color=black
 # add text
 d.text -b text="LST Day from MOD11B3.006 - North Carolina - March, 2015" \
 color=black bgcolor=229:229:229 align=cc font=sans size=8
-</code>
-</pre>
+</code></pre>
 <p style="text-align:center">
 <img style="width: 600px;" src="figures/mod11b3_nc.png" alt="display LST map with decorations" title="display LST map with decorations">
 </p>
@@ -310,43 +311,34 @@ t.create type=strds temporaltype=absolute output=LST_Day_monthly \
 # Check if the STRDS is created
 t.list type=strds
 t.info input=LST_Day_monthly
+</code></pre>
 
+<p>Once the container is created, we add the maps to it, i.e.: we register maps into the STRDS.</p>
+
+<pre><code class="neutral">
 # Register maps in STRDS
 t.register input=LST_Day_monthly \
  file=$HOME/lst_monthly/monthly_lst_to_tregister.txt
 
 t.info LST_Day_monthly
 t.rast.list LST_Day_monthly
+</code></pre>
+<pre><code class="neutral">
 g.gui.timeline -3 inputs=LST_Day_monthly
-
+</code></pre>
+<!--
 # plot here
-
-# alternatively
+-->
+<p>Alternatively, we could have registered maps as follows:</p>
+<pre><code class="neutral">
 t.register -i input=LST_Day_monthly \
  maps=`g.list type=raster pattern=MOD11B3* separator=comma` \
  start="2015-01-01" increment="1 month"
-
-# for more options to register maps: https://grasswiki.osgeo.org/wiki/Temporal_data_processing/maps_registration
 </code></pre>
+<p>For more options to register maps, you can also check the related <a href="https://grasswiki.osgeo.org/wiki/Temporal_data_processing/maps_registration" target="_blank">wiki</a> page.</p>
 <h3>Temporal data analysis</h3>
-<p>
+<p>Listing maps in STRDS</p>
 <pre><code class="neutral">
-# set a color table for the strds
-t.rast.color input=LST_Day_monthly color=viridis
-
-# summary stats for maps within STRDS
-t.rast.univar input=cla separator=comma output=stats_cla.csv
-
-# from kelvin to celsius
-t.rast.algebra basename=LST_Day_monthly_celsius \
- expression="LST_Day_monthly_celsius = (LST_Day_monthly*0.02) - 273.15"
-
-t.rast.color input=LST_Day_monthly color=celsius
-</code></pre>
-
-<pre><code class="neutral">
-# Listing maps in STRDS
-
 # maps with minimum value lower than or equal to 14000
 t.rast.list input=LST_Day_monthly_celsius order=min \
 columns=id,name,start_time,min where="min <= '14000'" 
@@ -355,7 +347,7 @@ columns=id,name,start_time,min where="min <= '14000'"
 t.rast.list input=LST_Day_monthly_celsius order=max \
 columns=name,start_time,max where="max > '14000'"
 
-# maps between the given dates
+# maps between two given dates
 t.rast.list input=LST_Day_monthly_celsius \
 where="start_time >= '2015-03' and start_time <= '2016-01'" 
 
@@ -366,14 +358,23 @@ where="strftime('%m', start_time)='01'"
 # maps from January, 1st
 t.rast.list input=LST_Day_monthly_celsius \
 where="strftime('%m-%d', start_time)='01-01'"
-
-# maps corresponding to Mondays (Sunday is 0)
-t.rast.list input=LST_Day_monthly_celsius \
-where="strftime('%w', start_time)='1'"
 </code></pre>
-
-# Aggregations
-
+<!--
+some example output here?
+-->
+<p>Univariate statistics for maps in the STRDS</p>
+<pre><code class="neutral">
+# summary stats for maps within STRDS
+t.rast.univar input=cla separator=comma output=stats_cla.csv
+</code></pre>
+<p>Transform data from K*0.02 to C and set a proper color palette for the STRDS</p>
+<pre><code class="neutral">
+# from kelvin to celsius
+t.rast.algebra basename=LST_Day_monthly_celsius \
+ expression="LST_Day_monthly_celsius = (LST_Day_monthly*0.02) - 273.15"
+t.rast.color input=LST_Day_monthly color=celsius
+</code></pre>
+<p>Temporal aggregations</p>
 <pre><code class="neutral">
 # max LST 
 t.rast.series input=LST_Day_monthly_celsius \
@@ -383,18 +384,16 @@ method=maximum
 # 3-month mean
 t.rast.aggregate input=LST_Day_monthly_celsius \
 output=LST_Day_mean_3month \
-basename= suffix=gran \
-method= granularity=
+basename=LST_Day_mean_3month suffix=gran \
+method=average granularity="3 months"
 
 # 6-month mean
 t.rast.aggregate input=LST_Day_monthly_celsius \
 output=LST_Day_mean_6month \
-basename= suffix=gran \
-method= granularity=
+basename=LST_Day_mean_6month suffix=gran \
+method=average granularity="6 months"
 </code></pre>
-
-# Spatio-temporal algebra: Get the month of maximum LST
-
+<p>Spatio-temporal algebra: Get the month of maximum LST</p>
 <pre><code class="neutral">
 # new strds with DOY of overall maximum 
 t.rast.mapcalc -n inputs=LST_Day_monthly_celsius output=month_max_lst \
@@ -411,22 +410,23 @@ t.remove -rf inputs=month_max_cla
 d.mon wx0
 d.rast max_lst_date
 </code></pre>
-
-
+<!--
+plot here
+-->
+<p>Now, we will extract the monthly and 3-month mean LST for points in a vector map.</p>
 <pre><code class="neutral">
-# Extract strds values for points in a vector
 v.what.strds input=comm_colleges strds= output=
 v.db.select map= file=ts_points.csv
 
 # alternatively:
 t.rast.what points=points strds=cla output=cla_points.csv null_value=NA separator=comma
-
-# Extract strds statistics for a polygons vector
+</code></pre>
+<p>We may also get spatially aggregated data for polygons vectors:</p>
+<pre><code class="neutral">
 v.strds.stats input=boundary_municp strds=LST_Day_monthly_celsius \
 output= method=average,minimum,maximum
 v.db.select map= file=ts_polygons.csv
 </code></pre>
-
 </p>
 <h3>Temporal data visualization</h3>
 <pre><code class="neutral">
