@@ -104,52 +104,78 @@
     <h4>Terminology overview</h4>
     <p>
     <h5>Temporal database</h5>
+    
+    A mapset specific table in which all time stamped maps are registered,
+    i.e.: their spatial and temporal extents, unique ID and map type metadata are stored.
+    This allows complex SQL queries using the spatio-temporal extent and metadata information for map selection.
+
     <p>
     <h5>Space-time datasets</h5>
     <ul>
-    <li>Space time raster datasets (<b>STRDS</b>) are designed to hold raster map time series. 
-    Modules that process strds are named with the prefix <em>t.rast.*</em></li>
-    <li>Space time 3D raster datasets (<b>STR3DS</b>) are designed to hold 3D raster map time series. 
-    Modules that process str3ds are named with the prefix <em>t.rast3d.*</em></li>
-    <li>Space time vector datasets (<b>STVDS</b>) are designed to hold vector map time series. 
-    Modules that process stvds are named with the prefix <em>t.vect.*</em></li>
+    <li>Space time raster datasets (<b>STRDS</b>) collections of time stamped raster maps.</li>
+    <li>Space time 3D raster datasets (<b>STR3DS</b>) collections of time stamped 3D raster maps.</li>
+    <li>Space time vector datasets (<b>STVDS</b>) collections of time stamped vector maps.</li>
     </ul>
+	<p>
+	<h5>Spatio-temporal modules</h5>
+	<ul>
+		<li><b>t.*</b>: General modules to handle stds of all types</li>
+		<li><b>t.rast.*</b>: Modules that process strds</li>
+		<li><b>t.rast3d.*</b>: Modules that process str3ds</li>
+		<li><b>t.vect.*</b>: Modules that process stvds</li>
+	</ul>
     <p>
     <h5>Absolute time vs relative time</h5>
     <p>
-<!--
-        Absolute time
-        Gregorian calendar (ISO 86012 time format notation) 
-        Example: 2013-10-15 13:00:00
-        
-        Relative time
-        An integer and a unit (year, month, day, hour, minute, seconds). 
-        Example: 4 years, 90 days, 1 second 
--->
+<table style="width:70%" border="1" align="center" bgcolor="#FFFFFF">
+  <tr>
+    <th>Absolute</th>
+    <th>Relative</th>
+  </tr>
+  <tr>
+    <td>Gregorian calendar (ISO 8601 time format notation)</td>
+    <td>An integer and a time unit (year, month, day, hour, minute, seconds)</td>
+  </tr>
+  <tr>
+    <td>Example: 2013-10-15 13:00:00</td>
+    <td>Example: 4 years, 90 days, 1 second</td>
+  </tr>
+</table>
     <h5>Time intervals vs time instances</h5>
     <p>
-<!--
-Time intervals
-Support for gaps
-Allows overlapping
-Might contain time instances
-Irregularly spaced in time
-Defined by start time and end time: 
-[start, end)
-
-Time instances
-Punctual event
-Defined by start time
--->
+<table style="width:70%" border="1" align="center" bgcolor="#FFFFFF">
+  <tr>
+	  <th>Time intervals</th>
+	  <th>Time instances</th>
+  </tr>
+  <tr>
+	  <td>Defined by start time and end time: [start, end)</td>
+	  <td>Defined by start time</td>
+  </tr>
+  <tr>
+	  <td>Support for gaps, Allows overlapping, Might contain time instances, Irregularly spaced in time</td>
+	  <td>Punctual event</td>
+  </tr>
+</table>
     <h5>Granularity</h5>
     <p>
+    The largest common divider granule of time intervals and gaps between intervals or instances from all time stamped spatial 
+    fields that are collected in a STDS. It is represented as a number of seconds, minutes, hours, days, weeks, months or years.
 <!--
-        The largest common divider granule of time intervals and gaps 
-        between intervals or instances from all time stamped spatial 
-        fields that are collected in a STDS. It is represented as a 
-        number of seconds, minutes, hours, days, weeks, months or years.
+    <h5>Temporal topology</h5>
+    <p>
+    The temporal relations between time stamps represented by interval time or time instances. Several
+	algorithms in TGRASS need to check the temporal topology of space time datasets for validity. A valid temporal topology allows only
+	the following temporal relationships: follows/precedes and after/before.
+	
+	<h5>Temporal sampling</h5>
+    <p>
+    to identify temporally related spatial fields of two space time datasets.
 -->
     <h4>Workflow overview</h4>
+<!--
+MAKE NICE FLOWCHART
+-->
     <ol>
     <li>Set and connect the temporal database (mapset specific): <a href="https://grass.osgeo.org/grass72/manuals/t.connect.html">t.connect</a></li>
     <li>Create the STDS (raster, vector or raster 3D): <a href="https://grass.osgeo.org/grass72/manuals/t.create.html">t.create</a></li>
