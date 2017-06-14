@@ -109,11 +109,37 @@
         <img style="width: 600px;" src="figures/region.png" alt="Show computational region" title="Show computational region"><br/>
         The red box show the computational region
     </div>
-    <em>MASK</em>: if the mask is set raster modules will operate only on data falling inside the masked area, and treat any data falling outside of the mask as if its value were NULL. To set the mask you can use <a href="https://grass.osgeo.org/grass72/manuals/r.mask.html">r.mask</a> or creating a raster called <code>MASK</code><br/>
+    <em>MASK</em>: if the mask is set raster modules will operate only on data falling inside the masked area, and treat any data falling outside of the mask as if its value were NULL. To set the mask you can use <a href="https://grass.osgeo.org/grass72/manuals/r.mask.html" targer="_blank">r.mask</a> or creating a raster called <code>MASK</code><br/>
     <div class="imagebox">
         <img style="width: 600px;" src="figures/mask.png" alt="Show MASK effect" title="Show MASK effect"><br />
         Setting the MASK only the data inside the masked area are used
     </div>
+
+    <h4>Interfaces</h4>
+    GRASS GIS has different interfaces for the interaction between user and software, let's see them...
+    <h5>Graphical User Interface</h5>
+    The GUI is the simpler way to approach GRASS GIS. The <a href="https://grass.osgeo.org/grass72/manuals/wxGUI.html" targer="_blank">GRASS GIS GUI</a> is composed by two element, the <code>Layer Manager</code> where you can find all the GRASS GIS modules and you can manage your data and the <code>Map Display</code> where you can navigate, print and query your maps.
+    <div class="imagebox">
+        <img style="width: 98%;" src="figures/grass_gis_gui.png" alt="GRASS GIS GUI" title="GRASS GIS GUI"><br />
+        GRASS GIS Graphical User Interface
+    </div>
+    Otherwise you can also use GRASS GIS inside QGIS using the <code>GRASS GIS plugin</code> or through <code>Processing</code>.
+    <h5>Command line</h5>
+    The command line is the older and, probably, the more powerful way to use GRASS GIS, most of the GRASS GIS power user use it daily.
+
+    <h5>Python</h5>
+    Python is a powerful and simple programming language, you can use it to:
+    <ul>
+        <li>interface with GRASS GIS</li>
+        <li>create your own procedure using several GRASS GIS modules</li>
+        <li>create a new addons using GRASS GIS modules or an ample number of libraries</li>
+    </ul>
+    <div class="imagebox">
+        <img style="width: 98%;" src="figures/python.png" alt="GRASS GIS Python interface" title="GRASS GIS Python interface"><br />
+        An example of Python code to run GRASS GIS modules
+    </div>
+    <h5>WPS</h5>
+    It is possible to run GRASS GIS modules trought the web using the <a href="https://en.wikipedia.org/wiki/Web_Processing_Service" targer="_blank">Web Processing Service</a> (WPS is an <a href="https://en.wikipedia.org/wiki/Open_Geospatial_Consortium" targer="_blank">OGC</a> standard). The Free and Open Source software <a href="http://zoo-project.org/" targer="_blank">ZOO-Project</a> and <a href="http://pywps.org/" targer="_blank">PyWPS</a> allow the user to run GRASS GIS command in a simple way.
 
     <h2><a name="temporalintro">Temporal GRASS GIS introduction</a></h2>
     <p>
