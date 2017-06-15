@@ -82,12 +82,12 @@
         </ul>
     </ul>
     <h2><a name="grassgisintro">GRASS GIS introduction</a></h2>
-    <h4>GRASS DATABASE, LOCATION, MAPSET</h4>
+    <h3>GRASS DATABASE, LOCATION, MAPSET</h3>
     The <b>GRASS DATABASE</b> (also called "GISDBASE") is an existing directory the projects are organized by project areas stored in subdirectories called LOCATIONs.<br />
     A <b>LOCATION</b> is defined by its coordinate system, map projection and geographical boundaries.<br />
     In a <b>MAPSET</b> you can organize GIS maps thematically or geographically or by project or whatever.<br />
 <!-- Add Vaclav image after my suggested modification -->
-    <h4>Raster and vector maps</h4>
+    <h3>Raster and vector maps</h3>
     GRASS GIS is able to read the most common GIS data format, mainly through GDAL library. GRASS GIS has it's own format to manage raster and vector data, so our data have to be imported or linked into a GRASS session. <br />
     The <b>vector format is topological one</b>, this means that adjacent geographic components in a single vector map are related. For example in a non-topological GIS if two areas shared a common border that border would be digitized two times and also stored in duplicate. In a topological GIS this border exists once and is shared between two areas. Topological representation of vector data helps to produce and maintain vector maps with clean geometry as well as enables certain analyses that can not be conducted with non-topological or spaghetti data. <br />
     <div class="imagebox">
@@ -95,26 +95,53 @@
         All the vector data types
     </div>
 
-    <h4>Modules</h4>
+    <h3>Modules</h3>
     GRASS GIS is composed by 450 and more modules to run any kind of GIS analisys. It is possible to analize raster, imagery, vector, alphanumeric attributes.<br />
     It is possible to install other modules, called Addons, from a centralized repository using the command  <a href="https://grass.osgeo.org/grass72/manuals/g.extension.html">g.extension</a>
-<!-- Add image with command after add t.* modules -->
-    <h4>Region and Mask</h4>
+    <div class="imagebox">
+        <img style="width: 100%;" src="figures/grass_gis_command_families.png" alt="GRASS GIS command families" title="GRASS GIS command families"><br />
+        GRASS GIS command families
+    </div>
+    <h3>Region and Mask</h3>
     The <b>computational (or current) region</b> is the <i>actual setting of the region boundaries and the actual raster resolution</i>.<br />
     The raster input maps are automatically cropped/padded and rescaled to match the current region, the output maps have their bounds and resolution equal to those of the current computational region, instead vector maps are always considered completely.
     <div class="imagebox">
         <img style="width: 600px;" src="figures/region.png" alt="Show computational region" title="Show computational region"><br/>
         The red box show the computational region
     </div>
-    <em>MASK</em>: if the mask is set raster modules will operate only on data falling inside the masked area, and treat any data falling outside of the mask as if its value were NULL. To set the mask you can use <a href="https://grass.osgeo.org/grass72/manuals/r.mask.html">r.mask</a> or creating a raster called <code>MASK</code><br/>
+    <em>MASK</em>: if the mask is set raster modules will operate only on data falling inside the masked area, and treat any data falling outside of the mask as if its value were NULL. To set the mask you can use <a href="https://grass.osgeo.org/grass72/manuals/r.mask.html" targer="_blank">r.mask</a> or creating a raster called <code>MASK</code><br/>
     <div class="imagebox">
         <img style="width: 600px;" src="figures/mask.png" alt="Show MASK effect" title="Show MASK effect"><br />
         Setting the MASK only the data inside the masked area are used
     </div>
 
+    <h3>Interfaces</h3>
+    GRASS GIS has different interfaces for the interaction between user and software, let's see them...
+    <h5>Graphical User Interface</h5>
+    The GUI is the simpler way to approach GRASS GIS. The <a href="https://grass.osgeo.org/grass72/manuals/wxGUI.html" targer="_blank">GRASS GIS GUI</a> is composed by two element, the <code>Layer Manager</code> where you can find all the GRASS GIS modules and you can manage your data and the <code>Map Display</code> where you can navigate, print and query your maps.
+    <div class="imagebox">
+        <img style="width: 98%;" src="figures/grass_gis_gui.png" alt="GRASS GIS GUI" title="GRASS GIS GUI"><br />
+        GRASS GIS Graphical User Interface
+    </div>
+    Otherwise you can also use GRASS GIS inside QGIS using the <code>GRASS GIS plugin</code> or through <code>Processing</code>.
+    <h5>Command line</h5>
+    The command line is the older and, probably, the more powerful way to use GRASS GIS, most of the GRASS GIS power user use it daily.
+
+    <h5>Python</h5>
+    Python is a powerful and simple programming language, you can use it to:
+    <ul>
+        <li>interface with GRASS GIS</li>
+        <li>create your own procedure using several GRASS GIS modules</li>
+        <li>create a new addons using GRASS GIS modules or an ample number of libraries</li>
+    </ul>
+    <div class="imagebox">
+        <img style="width: 98%;" src="figures/grass_gis_python.png" alt="GRASS GIS Python interface" title="GRASS GIS Python interface"><br />
+        An example of Python code to run GRASS GIS modules
+    </div>
+    <h5>WPS</h5>
+    It is possible to run GRASS GIS modules trought the web using the <a href="https://en.wikipedia.org/wiki/Web_Processing_Service" targer="_blank">Web Processing Service</a> (WPS is an <a href="https://en.wikipedia.org/wiki/Open_Geospatial_Consortium" targer="_blank">OGC</a> standard). The Free and Open Source software <a href="http://zoo-project.org/" targer="_blank">ZOO-Project</a> and <a href="http://pywps.org/" targer="_blank">PyWPS</a> allow the user to run GRASS GIS command in a simple way.
+
     <h2><a name="temporalintro">Temporal GRASS GIS introduction</a></h2>
-    <p>
-    <h3>GRASS GIS as a Temporal GIS</h3>
     <p>
 <!--
         First TGIS Open Source with capabilities to manage, analyze,
@@ -126,22 +153,19 @@
         metadata, as well as the topological relationships among maps
         and among STDS
 -->
-    <h4>Terminology overview</h4>
-    <p>
+    <h3>Terminology overview</h3>
     <h5>Temporal database</h5>
 
     A mapset specific table in which all time stamped maps are registered,
     i.e.: their spatial and temporal extents, unique ID and map type metadata are stored.
     This allows complex SQL queries using the spatio-temporal extent and metadata information for map selection.
 
-    <p>
     <h5>Space-time datasets</h5>
     <ul>
         <li>Space time raster datasets (<b>STRDS</b>) collections of time stamped raster maps.</li>
         <li>Space time 3D raster datasets (<b>STR3DS</b>) collections of time stamped 3D raster maps.</li>
         <li>Space time vector datasets (<b>STVDS</b>) collections of time stamped vector maps.</li>
     </ul>
-	<p>
 	<h5>Spatio-temporal modules</h5>
 	<ul>
 		<li><b>t.*</b>: General modules to handle stds of all types</li>
@@ -197,7 +221,7 @@
     <p>
     to identify temporally related spatial fields of two space time datasets.
 -->
-    <h4>Workflow overview</h4>
+    <h3>Workflow overview</h3>
 <!--
 MAKE NICE FLOWCHART
 -->
@@ -536,8 +560,12 @@ g.gui.tplot
         </li>
     </ul>
     <h2>References</h2>
-    Gebbert, S., Pebesma, E. (2014). <em>A temporal GIS for field based environmental modeling</em>. Environmental Modelling & Software, 53, 1–12. <a href="https://doi.org/10.1016/j.envsoft.2013.11.001" target="_blank">DOI</a><br>
-    Gebbert, S., Pebesma, E. (2017). <em>The GRASS GIS temporal framework</em>. International Journal of Geographical Information Science 31, 1273-1292. <a href="http://dx.doi.org/10.1080/13658816.2017.1306862" target="_blank">DOI</a><br>
+    <ul>
+        <li>Gebbert, S., Pebesma, E. (2014). <em>A temporal GIS for field based environmental modeling</em>. Environmental Modelling & Software, 53, 1–12. <a href="https://doi.org/10.1016/j.envsoft.2013.11.001" target="_blank">DOI</a></li>
+        <li>Gebbert, S., Pebesma, E. (2017). <em>The GRASS GIS temporal framework</em>. International Journal of Geographical Information Science 31, 1273-1292. <a href="http://dx.doi.org/10.1080/13658816.2017.1306862" target="_blank">DOI</a></li>
+        <li>Neteler, M., Bowman, M.H., Landa, M. and Metz, M. (2012): <em>GRASS GIS: a multi-purpose Open Source GIS</em>. Environmental Modelling & Software, 31: 124-130 <a href="http://dx.doi.org/10.1016/j.envsoft.2011.11.014" target="_blank">DOI</a></li>
+        <li>Neteler, M., Mitasova, H. (2008): <em>Open Source GIS: A GRASS GIS Approach</em>. Third edition. ed. Springer, New York.</li>
+    </ul>
     <hr>
   </div>
 

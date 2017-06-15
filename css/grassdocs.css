@@ -248,3 +248,7 @@ img {
   border: 1px solid gray;
   font-family: monospace;
 }
+
+li{
+  margin: 5px 0;
+}
