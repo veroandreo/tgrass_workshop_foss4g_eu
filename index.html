@@ -101,7 +101,7 @@
     </div>
 
     <h3>Raster and vector maps</h3>
-    GRASS GIS is able to read most GIS data formats directly (mainly done through the GDAL library). GRASS GIS has own internal formats to manage raster and vector data, so own data have to be imported or linked into a GRASS LOCATION/MAPSET.<br>
+    GRASS GIS is able to read most GIS data formats directly (mainly done through the GDAL library). GRASS GIS has its own internal formats to manage raster and vector data, so own data have to be imported or linked into a GRASS LOCATION/MAPSET.<br>
     The <b>vector format is topological</b>, this means that adjacent geographic components in a single vector map are related to each other. For example, in a non-topological GIS if two areas shared a common border that border would be digitized twice and also stored in a duplicate manner. In a topological GIS such as GRASS GIS this border exists only once and is shared between these two areas. The topological representation of vector data helps to produce and maintain vector maps with clean geometry as well as it enables certain analyses that can not be conducted with non-topological or spaghetti data. <br>
     <div class="imagebox">
         <img style="width: 700px;" src="figures/datatypes.png" alt="Vector data types" title="Vector data types"><br>
@@ -109,7 +109,7 @@
     </div>
 
     <h3>Modules</h3>
-    GRASS GIS is composed of 450 and more modules to run any kind of GIS analysis. It is possible to analize raster, imagery, vector maps along with their alphanumerical attributes.<br>
+    GRASS GIS is composed of 450 and more modules to run any kind of GIS analysis. It is possible to analize raster, raster 3D, imagery and vector maps along with their alphanumerical attributes.<br>
     It is possible to install further modules, called Addons, from a centralized repository at OSGeo or from github using the command  <a href="https://grass.osgeo.org/grass72/manuals/g.extension.html">g.extension</a>.
     The wealth of modules is organized by their first name in order to easily find the desired functionality. The graphical user interface offers a tree view as well as a search engine.
     <div class="imagebox">
@@ -132,7 +132,7 @@
     <h3>Interfaces</h3>
     GRASS GIS offers different interfaces for the interaction between user and software, let's see them...
     <h5>Graphical User Interface</h5>
-    The GUI is the simpler way to approach GRASS GIS. The <a href="https://grass.osgeo.org/grass72/manuals/wxGUI.html" target="_blank">GRASS GIS GUI</a> is composed by two element, the <code>Layer Manager</code> where you can find all the GRASS GIS modules and you can manage your data and the <code>Map Display</code> where you can navigate, print and query your maps. It also comes with a Python shell for rapid prototyping.
+    The GUI is the simpler way to approach GRASS GIS. The <a href="https://grass.osgeo.org/grass72/manuals/wxGUI.html" target="_blank">GRASS GIS GUI</a> is composed by two elements, the <code>Layer Manager</code> where you can find all the GRASS GIS modules and you can manage your data and, the <code>Map Display</code> where you can navigate, print and query your maps. It also comes with a Python shell for rapid prototyping.
     <div class="imagebox">
         <img style="width: 98%;" src="figures/grass_gis_gui.png" alt="GRASS GIS GUI" title="GRASS GIS GUI"><br>
         GRASS GIS Graphical User Interface (GUI)
@@ -140,13 +140,12 @@
     Otherwise you can also use GRASS GIS inside QGIS by either using the <code>GRASS GIS plugin</code> or through <code>Processing</code>.
     <h5>Command line</h5>
     The command line is the traditional and, probably, the more powerful way to use GRASS GIS, used daily by many GRASS GIS power users worldwide.
-
     <h5>Python</h5>
-    Python is a powerful and simple programming language, you can use it to:
+    Python is a powerful and simple programming language, and you can use it to:
     <ul>
         <li>interface with the functionality offered by GRASS GIS</li>
-        <li>create your own procedure chaining several GRASS GIS modules</li>
-        <li>create new addons by using GRASS GIS modules along with an ample number of Python libraries</li>
+        <li>create your own workflows chaining several GRASS GIS modules</li>
+        <li>create new addons by using GRASS GIS modules along with a wide number of Python libraries</li>
     </ul>
     <div class="imagebox">
 <!-- TODO: it would be great to make this true highlighted text for easy copy-pasting! -->
@@ -154,7 +153,7 @@
         An example of Python code to run GRASS GIS modules
     </div>
     <h5>WPS - OGC Web Processing Service</h5>
-    It is possible to run GRASS GIS modules throught the web using the <a href="https://en.wikipedia.org/wiki/Web_Processing_Service" target="_blank">Web Processing Service</a> (WPS is an <a href="https://en.wikipedia.org/wiki/Open_Geospatial_Consortium" target="_blank">OGC</a> standard). The Free and Open Source software <a href="http://zoo-project.org/" target="_blank">ZOO-Project</a> and <a href="http://pywps.org/" target="_blank">PyWPS</a> allow the user to run GRASS GIS command in a simple way.
+    It is possible to run GRASS GIS modules through the web using the <a href="https://en.wikipedia.org/wiki/Web_Processing_Service" target="_blank">Web Processing Service</a> (WPS is an <a href="https://en.wikipedia.org/wiki/Open_Geospatial_Consortium" target="_blank">OGC</a> standard). The Free and Open Source software <a href="http://zoo-project.org/" target="_blank">ZOO-Project</a> and <a href="http://pywps.org/" target="_blank">PyWPS</a> allow the user to run GRASS GIS command in a simple way.
 
     <h2><a name="temporalintro">Temporal GRASS GIS introduction</a></h2>
     <p>
