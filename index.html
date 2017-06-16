@@ -1,53 +1,53 @@
-<!doctype html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
-<html lang="en">
+<html>
 <head>
-  <meta charset="utf-8">
-
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>TGRASS: temporal data processing with GRASS GIS</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="Short course TGRASS: temporal data processing with GRASS GIS">
+  <meta name="author" content="Veronica Andreo, Luca Delucchi, Markus Neteler">
   <link rel="shortcut icon" href="grass.png">
 
-  <script src="lib/jquery.js"></script>
+  <script type="text/javascript" src="lib/jquery.js"></script>
+  <script type="text/javascript" src="lib/codetabs.js"></script>
 
 <!--
 <link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
 <script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
 -->
 
-<link rel="stylesheet" href="lib/highlights/styles/default.css">
-<script src="lib/highlights/highlight.pack.js"></script>
+  <script type="text/javascript" src="lib/highlights/highlight.pack.js"></script>
+  <link rel="stylesheet" href="lib/highlights/styles/default.css">
+  <link rel="stylesheet" href="css/grassdocs.css">
+  <link rel="stylesheet" href="css/codetabs.css">
 
-
-<style>
+<style type="text/css">
 .hljs{
     display: none;
     /*padding: 0em;*/
 }
 </style>
 
-
-  <link rel="stylesheet" href="css/grassdocs.css">
-  <link rel="stylesheet" href="css/codetabs.css">
-
 </head>
 
 <body>
 
   <div id="container">
-    <a href="https://europe.foss4g.org/2017/" title="FOSS4G EU 2017"><img src="foss4g_eu_2017.png" width="22%" height="22%" align="left" alt="FOSS4G EU 2017 logo"></a><a href="http://grass.osgeo.org" title="GRASS GIS"><img src="grassgis_logo_colorlogo_text_whitebg.png" width="19%" height="19%" align="right" alt="GRASS GIS logo"></a><h1 align="center">TGRASS: temporal data processing with GRASS GIS</h1>
+<!-- TODO fix div for logo usage and proper centering -->
+    <a href="https://europe.foss4g.org/2017/" title="FOSS4G EU 2017"><img src="foss4g_eu_2017.png" width="22%" height="22%" align="left" alt="FOSS4G EU 2017 logo">
+    </a><a href="https://grass.osgeo.org" title="GRASS GIS"><img src="grassgis_logo_colorlogo_text_whitebg.png" width="19%" height="19%" align="right" alt="GRASS GIS logo"></a>
+    <h1 align="center">TGRASS: temporal data processing with GRASS GIS</h1>
     <h2 class="notoc" align="center">FOSS4G Europe 2017 workshop</h2>
     <p align="center">
     <a href="https://veroandreo.wordpress.com/" target="_blank">Veronica Andreo</a>, <a href="http://www.lucadelu.org" target="_blank">Luca Delucchi</a> and <a href="https://www.mundialis.de/en/neteler/" target="_blank">Markus Neteler</a>
-    </p>
-    <p style="border-top-style: solid; border-bottom-style: solid; border-width: 5px; border-color: rgb(130, 130, 130); padding-top: 5px;">
 <!--
 	meter una animacion de NC
 -->
     </p>
+    <p style="border-top-style: solid; border-bottom-style: solid; border-width: 5px; border-color: rgb(130, 130, 130); padding-top: 5px;">
+
     <p>
-    Outline:
+    Course outline:
     <ul>
         <li><a href="#grassgisintro">Introduction to GRASS GIS</a></li>
         <li><a href="#temporalintro">Introduction to GRASS Temporal Framework</a></li>
@@ -58,15 +58,15 @@
     </ul>
     </p>
     <p>
-    Software:
+    Software requirements:
     <ul>
-        <li>GRASS GIS 7.2</li>
+        <li>GRASS GIS 7.2: <a href="https://grass.osgeo.org/download/software/">download</a> | <a href="https://live.osgeo.org/">OSGeo-live</a></li>
         <li>
             GRASS GIS Add-ons: <a href="https://grass.osgeo.org/grass72/manuals/addons/r.modis.download.html">r.modis.download</a>,
             <a href="https://grass.osgeo.org/grass72/manuals/addons/r.modis.import.html">r.modis.import</a> and
             <a href="https://grass.osgeo.org/grass72/manuals/addons/v.strds.stats.html">v.strds.stats</a>
         </li>
-        <li> <a href="http.pyModis.org">pyModis</a> </li>
+        <li> <a href="http://www.pymodis.org">pyModis</a> library</li>
 <!--
 	<li>matplotlib with pyplot
 	(included in GRASS installation for MS Windows; package python-matplotlib for Ubuntu)</li>
@@ -74,13 +74,18 @@
     </ul>
     </p>
     <p>
-    Data:
+    Sample data:
     <ul>
-        <li>location <a href="https://grass.osgeo.org/sampledata/north_carolina/nc_spm_08_grass7.tar.gz">NC basic (50 MB)</a>
+        <li>Main dataset: <a href="https://grass.osgeo.org/sampledata/north_carolina/nc_spm_08_grass7.tar.gz">North Carolina basic location (50 MB)</a>
         <ul>
-            <li>mapset <code>modis_lst</code>: monthly land surface temperature (LST) from MODIS sensor (MOD11B3.006) for North Carolina (2015-2016)</li>
+<!-- TODO add url: -->
+            <li>extra "mapset" <code>modis_lst</code>: monthly land surface temperature (LST) from MODIS sensor (MOD11B3.006) for North Carolina (2015-2016)</li>
         </ul>
     </ul>
+    </p>
+    <p style="border-top-style: solid; border-bottom-style: solid; border-width: 5px; border-color: rgb(130, 130, 130); padding-top: 5px;">
+
+    <p>
     <h2><a name="grassgisintro">GRASS GIS introduction</a></h2>
     <h3>GRASS DATABASE, LOCATION, MAPSET</h3>
     The <b>GRASS DATABASE</b> (also called "GISDBASE") is an existing directory the projects are organized by project areas stored in subdirectories called LOCATIONs.<br />
@@ -109,7 +114,7 @@
         <img style="width: 600px;" src="figures/region.png" alt="Show computational region" title="Show computational region"><br/>
         The red box show the computational region
     </div>
-    <em>MASK</em>: if the mask is set raster modules will operate only on data falling inside the masked area, and treat any data falling outside of the mask as if its value were NULL. To set the mask you can use <a href="https://grass.osgeo.org/grass72/manuals/r.mask.html" targer="_blank">r.mask</a> or creating a raster called <code>MASK</code><br/>
+    <em>MASK</em>: if the mask is set raster modules will operate only on data falling inside the masked area, and treat any data falling outside of the mask as if its value were NULL. To set the mask you can use <a href="https://grass.osgeo.org/grass72/manuals/r.mask.html" target="_blank">r.mask</a> or creating a raster called <code>MASK</code><br/>
     <div class="imagebox">
         <img style="width: 600px;" src="figures/mask.png" alt="Show MASK effect" title="Show MASK effect"><br />
         Setting the MASK only the data inside the masked area are used
@@ -118,7 +123,7 @@
     <h3>Interfaces</h3>
     GRASS GIS has different interfaces for the interaction between user and software, let's see them...
     <h5>Graphical User Interface</h5>
-    The GUI is the simpler way to approach GRASS GIS. The <a href="https://grass.osgeo.org/grass72/manuals/wxGUI.html" targer="_blank">GRASS GIS GUI</a> is composed by two element, the <code>Layer Manager</code> where you can find all the GRASS GIS modules and you can manage your data and the <code>Map Display</code> where you can navigate, print and query your maps.
+    The GUI is the simpler way to approach GRASS GIS. The <a href="https://grass.osgeo.org/grass72/manuals/wxGUI.html" target="_blank">GRASS GIS GUI</a> is composed by two element, the <code>Layer Manager</code> where you can find all the GRASS GIS modules and you can manage your data and the <code>Map Display</code> where you can navigate, print and query your maps.
     <div class="imagebox">
         <img style="width: 98%;" src="figures/grass_gis_gui.png" alt="GRASS GIS GUI" title="GRASS GIS GUI"><br />
         GRASS GIS Graphical User Interface
@@ -139,7 +144,7 @@
         An example of Python code to run GRASS GIS modules
     </div>
     <h5>WPS</h5>
-    It is possible to run GRASS GIS modules trought the web using the <a href="https://en.wikipedia.org/wiki/Web_Processing_Service" targer="_blank">Web Processing Service</a> (WPS is an <a href="https://en.wikipedia.org/wiki/Open_Geospatial_Consortium" targer="_blank">OGC</a> standard). The Free and Open Source software <a href="http://zoo-project.org/" targer="_blank">ZOO-Project</a> and <a href="http://pywps.org/" targer="_blank">PyWPS</a> allow the user to run GRASS GIS command in a simple way.
+    It is possible to run GRASS GIS modules trought the web using the <a href="https://en.wikipedia.org/wiki/Web_Processing_Service" target="_blank">Web Processing Service</a> (WPS is an <a href="https://en.wikipedia.org/wiki/Open_Geospatial_Consortium" target="_blank">OGC</a> standard). The Free and Open Source software <a href="http://zoo-project.org/" target="_blank">ZOO-Project</a> and <a href="http://pywps.org/" target="_blank">PyWPS</a> allow the user to run GRASS GIS command in a simple way.
 
     <h2><a name="temporalintro">Temporal GRASS GIS introduction</a></h2>
     <p>
@@ -564,12 +569,11 @@ g.gui.tplot
         <li>Gebbert, S., Pebesma, E. (2014). <em>A temporal GIS for field based environmental modeling</em>. Environmental Modelling & Software, 53, 1–12. <a href="https://doi.org/10.1016/j.envsoft.2013.11.001" target="_blank">DOI</a></li>
         <li>Gebbert, S., Pebesma, E. (2017). <em>The GRASS GIS temporal framework</em>. International Journal of Geographical Information Science 31, 1273-1292. <a href="http://dx.doi.org/10.1080/13658816.2017.1306862" target="_blank">DOI</a></li>
         <li>Neteler, M., Bowman, M.H., Landa, M. and Metz, M. (2012): <em>GRASS GIS: a multi-purpose Open Source GIS</em>. Environmental Modelling & Software, 31: 124-130 <a href="http://dx.doi.org/10.1016/j.envsoft.2011.11.014" target="_blank">DOI</a></li>
-        <li>Neteler, M., Mitasova, H. (2008): <em>Open Source GIS: A GRASS GIS Approach</em>. Third edition. ed. Springer, New York.</li>
+        <li>Neteler, M., Mitasova, H. (2008): <em>Open Source GIS: A GRASS GIS Approach</em>. Third edition. ed. Springer, New York.<a href="https://grassbook.org/" target="_blank">book site</a></li>
     </ul>
+    </p>
     <hr>
   </div>
-
-  <script src="lib/codetabs.js"></script>
 
 </body>
 </html>
