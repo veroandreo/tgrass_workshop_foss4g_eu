@@ -93,18 +93,18 @@
     In a <b>MAPSET</b> you can organize GIS maps thematically or geographically or by project or whatever.<br />
 <!-- Add Vaclav image after my suggested modification -->
     <h3>Raster and vector maps</h3>
-    GRASS GIS is able to read the most common GIS data format, mainly through GDAL library. GRASS GIS has it's own format to manage raster and vector data, so our data have to be imported or linked into a GRASS session. <br />
-    The <b>vector format is topological one</b>, this means that adjacent geographic components in a single vector map are related. For example in a non-topological GIS if two areas shared a common border that border would be digitized two times and also stored in duplicate. In a topological GIS this border exists once and is shared between two areas. Topological representation of vector data helps to produce and maintain vector maps with clean geometry as well as enables certain analyses that can not be conducted with non-topological or spaghetti data. <br />
+    GRASS GIS is able to read the most common GIS data formats, mainly through GDAL library. GRASS GIS has it's own format to manage raster and vector data, so our data have to be imported or linked into a GRASS session. <br />
+    The <b>vector format in GRASS GIS is a topological one</b>. This means that adjacent geographic components in a single vector map are related. For example, in a non-topological GIS if two areas share a common border, that border would have to be digitized and stored twice. In a topological GIS, however, this border exists only once and it is shared between two areas. Topological representation of vector data helps to produce and maintain vector maps with clean geometry as well as enables certain analyses that cannot be conducted with non-topological or spaghetti data. <br />
     <div class="imagebox">
         <img style="width: 700px;" src="figures/datatypes.png" alt="Vector data types" title="Vector data types"><br />
-        All the vector data types
+        GRASS GIS vector data types
     </div>
 
     <h3>Modules</h3>
-    GRASS GIS is composed by 450 and more modules to run any kind of GIS analisys. It is possible to analize raster, imagery, vector, alphanumeric attributes.<br />
-    It is possible to install other modules, called Addons, from a centralized repository using the command  <a href="https://grass.osgeo.org/grass72/manuals/g.extension.html">g.extension</a>
+    GRASS GIS is composed by more than 450 modules to run any kind of GIS analisys. It is possible to analize raster, raster 3D, imagery and vector data, as well as, alphanumeric attributes.<br />
+    It is also possible to install additional modules, called Addons, from a centralized repository using the command <a href="https://grass.osgeo.org/grass72/manuals/g.extension.html">g.extension</a>
     <div class="imagebox">
-        <img style="width: 100%;" src="figures/grass_gis_command_families.png" alt="GRASS GIS command families" title="GRASS GIS command families"><br />
+        <img style="width: 80%;" src="figures/grass_gis_command_families.png" alt="GRASS GIS command families" title="GRASS GIS command families"><br />
         GRASS GIS command families
     </div>
     <h3>Region and Mask</h3>
@@ -112,39 +112,39 @@
     The raster input maps are automatically cropped/padded and rescaled to match the current region, the output maps have their bounds and resolution equal to those of the current computational region, instead vector maps are always considered completely.
     <div class="imagebox">
         <img style="width: 600px;" src="figures/region.png" alt="Show computational region" title="Show computational region"><br/>
-        The red box show the computational region
+        The red box shows the computational region
     </div>
     <em>MASK</em>: if the mask is set raster modules will operate only on data falling inside the masked area, and treat any data falling outside of the mask as if its value were NULL. To set the mask you can use <a href="https://grass.osgeo.org/grass72/manuals/r.mask.html" target="_blank">r.mask</a> or creating a raster called <code>MASK</code><br/>
     <div class="imagebox">
         <img style="width: 600px;" src="figures/mask.png" alt="Show MASK effect" title="Show MASK effect"><br />
-        Setting the MASK only the data inside the masked area are used
+        By setting the MASK, only the data inside the masked area are used
     </div>
 
     <h3>Interfaces</h3>
     GRASS GIS has different interfaces for the interaction between user and software, let's see them...
     <h5>Graphical User Interface</h5>
-    The GUI is the simpler way to approach GRASS GIS. The <a href="https://grass.osgeo.org/grass72/manuals/wxGUI.html" target="_blank">GRASS GIS GUI</a> is composed by two element, the <code>Layer Manager</code> where you can find all the GRASS GIS modules and you can manage your data and the <code>Map Display</code> where you can navigate, print and query your maps.
+    The GUI is the simpler way to approach GRASS GIS. The <a href="https://grass.osgeo.org/grass72/manuals/wxGUI.html" target="_blank">GRASS GIS GUI</a> is composed by two elements, the <code>Layer Manager</code> where you can find all the GRASS GIS modules and you can manage your data and, the <code>Map Display</code> where you can navigate, print and query your maps.
     <div class="imagebox">
         <img style="width: 98%;" src="figures/grass_gis_gui.png" alt="GRASS GIS GUI" title="GRASS GIS GUI"><br />
         GRASS GIS Graphical User Interface
     </div>
     Otherwise you can also use GRASS GIS inside QGIS using the <code>GRASS GIS plugin</code> or through <code>Processing</code>.
     <h5>Command line</h5>
-    The command line is the older and, probably, the more powerful way to use GRASS GIS, most of the GRASS GIS power user use it daily.
+    The command line is the older and, probably, the more powerful way to use GRASS GIS, most of the GRASS GIS power users use it daily.
 
     <h5>Python</h5>
-    Python is a powerful and simple programming language, you can use it to:
+    Python is a powerful and simple programming language, and you can use it to:
     <ul>
         <li>interface with GRASS GIS</li>
-        <li>create your own procedure using several GRASS GIS modules</li>
-        <li>create a new addons using GRASS GIS modules or an ample number of libraries</li>
+        <li>create your own workflows using several GRASS GIS modules</li>
+        <li>create a new addon using GRASS GIS modules or a wide number of libraries</li>
     </ul>
     <div class="imagebox">
-        <img style="width: 98%;" src="figures/grass_gis_python.png" alt="GRASS GIS Python interface" title="GRASS GIS Python interface"><br />
+        <img style="width: 90%;" src="figures/grass_gis_python.png" alt="GRASS GIS Python interface" title="GRASS GIS Python interface"><br />
         An example of Python code to run GRASS GIS modules
     </div>
     <h5>WPS</h5>
-    It is possible to run GRASS GIS modules trought the web using the <a href="https://en.wikipedia.org/wiki/Web_Processing_Service" target="_blank">Web Processing Service</a> (WPS is an <a href="https://en.wikipedia.org/wiki/Open_Geospatial_Consortium" target="_blank">OGC</a> standard). The Free and Open Source software <a href="http://zoo-project.org/" target="_blank">ZOO-Project</a> and <a href="http://pywps.org/" target="_blank">PyWPS</a> allow the user to run GRASS GIS command in a simple way.
+    It is possible to run GRASS GIS modules trought the web using the <a href="https://en.wikipedia.org/wiki/Web_Processing_Service" target="_blank">Web Processing Service</a> (WPS is an <a href="https://en.wikipedia.org/wiki/Open_Geospatial_Consortium" target="_blank">OGC</a> standard). The Free and Open Source software <a href="http://zoo-project.org/" target="_blank">ZOO-Project</a> and <a href="http://pywps.org/" target="_blank">PyWPS</a> allow the user to run GRASS GIS commands in a simple way.
 
     <h2><a name="temporalintro">Temporal GRASS GIS introduction</a></h2>
     <p>
