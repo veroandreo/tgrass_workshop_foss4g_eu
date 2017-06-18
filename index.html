@@ -112,10 +112,76 @@
     GRASS GIS is composed of 450 and more modules to run any kind of GIS analysis. It is possible to analize raster, raster 3D, imagery and vector maps along with their alphanumerical attributes.<br>
     It is possible to install further modules, called Addons, from a centralized repository at OSGeo or from github using the command  <a href="https://grass.osgeo.org/grass72/manuals/g.extension.html">g.extension</a>.
     The wealth of modules is organized by their first name in order to easily find the desired functionality. The graphical user interface offers a tree view as well as a search engine.
+    <p>
+    <table style="width:80%" border="1" align="center" bgcolor="#FFFFFF">
+	   <caption>GRASS GIS module families</caption>
+      <tr>
+          <th>Prefix</th>
+          <th>Function class</th>
+          <th>Type of command</th>
+          <th>Example</th>
+      </tr>
+      <tr>
+		  <td>g.*</td>
+		  <td>general</td>
+		  <td>general data management</td>
+		  <td>g.rename: renames map</td>
+      </tr>
+      <tr>
+		  <td>d.*</td>
+		  <td>display</td>
+		  <td>graphical output</td>
+		  <td>d.rast: display raster map, d.vect: display vector map</td>
+      </tr>
+      <tr>
+		  <td>r.*</td>
+		  <td>raster</td>
+		  <td>raster processing</td>
+		  <td>r.mapcalc: map algebra, r.univar: univariate statistics</td>
+      </tr>
+      <tr>
+		  <td>v.*</td>
+		  <td>vector</td>
+		  <td>vector processing</td>
+		  <td>v.clean: topological cleaning</td>
+      </tr>
+      <tr>
+		  <td>i.*</td>
+		  <td>imagery</td>
+		  <td>imagery processing</td>
+		  <td>i.pca: Principal Components Analysis on imagery group</td>
+      </tr>
+      <tr>
+		  <td>r3.*</td>
+		  <td>voxel</td>
+		  <td>3D raster processing</td>
+		  <td>r3.stats: voxel statistics</td>
+      </tr>
+      <tr>
+		  <td>db.*</td>
+		  <td>database</td>
+		  <td>database management</td>
+		  <td>db.select: select value(s) from table</td>
+      </tr>
+      <tr>
+		  <td>ps.*</td>
+		  <td>postscript</td>
+		  <td>map creation in PostScript format</td>
+		  <td>ps.map: PostScript map creation</td>
+      </tr>
+      <tr>
+		  <td>t.*</td>
+		  <td>temporal</td>
+		  <td>space-time datasets</td>
+		  <td>t.rast.aggregate: raster time series aggregation</td>
+      </tr>
+    </table>
+<!--
     <div class="imagebox">
         <img style="width: 100%;" src="figures/grass_gis_command_families.png" alt="GRASS GIS module families" title="GRASS GIS module families"><br>
         GRASS GIS module families
     </div>
+-->
     <h3>Region and Mask</h3>
     The <b>computational (or current) region</b> is the <i>actual setting of the region boundaries and the actual raster resolution</i>.<br>
     The raster input maps are automatically cropped/padded and rescaled to match the current region, the output maps have their bounds and resolution equal to those of the current computational region, whiles vector maps are always considered completely.
@@ -147,11 +213,38 @@
         <li>create your own workflows chaining several GRASS GIS modules</li>
         <li>create new addons by using GRASS GIS modules along with a wide number of Python libraries</li>
     </ul>
+    <pre>
+		<code class="python">
+!/usr/bin/env python
+
+# simple example for pyGRASS usage: raster processing via modules approach
+
+from grass.pygrass.modules.shortcuts import general as g
+from grass.pygrass.modules.shortcuts import raster as r
+
+g.message("Filter elevation map by a threshold...")
+
+# set computational region
+input = 'elevation'
+g.region(rast=input)
+
+# hardcoded:
+# r.mapcalc('elev_100m = if(elevation > 100, elevation, null())', overwrite = True)
+
+# with variables
+output = 'elev_100m'
+thresh = 100.0
+r.mapcalc("%s = if(%s > %d, %s, null())" % (output, input, thresh, input), overwrite = True)
+r.colors(map=output, color="elevation")
+		</code>
+    </pre>
+<!--
     <div class="imagebox">
-<!-- TODO: it would be great to make this true highlighted text for easy copy-pasting! -->
+ TODO: it would be great to make this true highlighted text for easy copy-pasting! 
         <img style="width: 98%;" src="figures/grass_gis_python.png" alt="GRASS GIS Python interface" title="GRASS GIS Python interface"><br>
         An example of Python code to run GRASS GIS modules
     </div>
+-->
     <h5>WPS - OGC Web Processing Service</h5>
     It is possible to run GRASS GIS modules through the web using the <a href="https://en.wikipedia.org/wiki/Web_Processing_Service" target="_blank">Web Processing Service</a> (WPS is an <a href="https://en.wikipedia.org/wiki/Open_Geospatial_Consortium" target="_blank">OGC</a> standard). The Free and Open Source software <a href="http://zoo-project.org/" target="_blank">ZOO-Project</a> and <a href="http://pywps.org/" target="_blank">PyWPS</a> allow the user to run GRASS GIS command in a simple way.
 
