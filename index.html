@@ -484,7 +484,7 @@ d.text -b text="LST Day from MOD11B3.006 - North Carolina - March, 2015" \
  color=black bgcolor=229:229:229 align=cc font=sans size=8
         </code>
         <code class="gui">
-        <!-- # add image -->
+        <!-- # add image: could really cool to have a video or a animated gif that show all the steps -->
 		</code>
     </pre>
     <p style="text-align:center">
@@ -633,6 +633,11 @@ t.rast.algebra basename=LST_Day_monthly_celsius \
  expression="LST_Day_monthly_celsius = (LST_Day_monthly*0.02) - 273.15"
 t.rast.colors input=LST_Day_monthly_celsius color=celsius
         </code>
+        <code class="python">
+gmod.Module("t.rast.algebra", basename="LST_Day_monthly_celsius",
+            expression="LST_Day_monthly_celsius = (LST_Day_monthly*0.02) - 273.15")
+gmod.Module("t.rast.colors", input="LST_Day_monthly_celsius", color="celsius")
+        </code>
     </pre>
     <h3>Temporal aggregations</h3>
     <p>We will use t.rast.series to obtain the maximum absolute LST in the past two years and t.rast.aggregate to get 3-month and 6-months average LST</p>
@@ -646,21 +651,25 @@ t.rast.series input=LST_Day_monthly_celsius \
  output=LST_Day_max_2015_2016 \
  method=maximum
         </code>
+        <code class="python">
+gmod.Module("t.rast.series", input="LST_Day_monthly_celsius",
+            output="LST_Day_max_2015_2016" method="maximum")
+        </code>
     </pre>
     <pre>
         <code class="neutral">
+t.rast.aggregate input=LST_Day_monthly_celsius output=LST_Day_mean_3month basename=LST_Day_mean_3month suffix=gran method=average granularity="3 months"
+        </code>
+        <code class="bash">
 # 3-month mean
 t.rast.aggregate input=LST_Day_monthly_celsius \
  output=LST_Day_mean_3month \
  basename=LST_Day_mean_3month suffix=gran \
  method=average granularity="3 months"
-
-# 6-month mean
-t.rast.aggregate input=LST_Day_monthly_celsius \
- output=LST_Day_mean_6month \
- basename=LST_Day_mean_6month suffix=gran \
- method=average granularity="6 months"
-        <!-- Is this t.rast.aggregate useful? could we remove it? -->
+        </code>
+        <code class="python">
+gmod.Module("t.rast.aggregate", input="LST_Day_monthly_celsius", output="LST_Day_mean_3month",
+            basename="LST_Day_mean_3month", suffix="gran", method="average", granularity="3 months")
         </code>
     </pre>
     <p>Now, by means of the spatio-temporal algebra, we will get the month in which the absolute maximum LST occurred. For that, we first
@@ -670,6 +679,11 @@ t.rast.aggregate input=LST_Day_monthly_celsius \
     aggregated map</p>
     <pre>
         <code class="neutral">
+t.rast.mapcalc -n inputs=LST_Day_monthly_celsius output=month_max_lst expression="if(LST_Day_monthly_celsius == LST_Day_max_2015_2016, start_month(), null())" basename=month_max_lst
+t.rast.series input=month_max_lst method=maximum output=max_lst_date
+t.remove -rf inputs=month_max_lst
+        </code>
+        <code class="bash">
 # new strds with moth of overall maximum
 t.rast.mapcalc -n inputs=LST_Day_monthly_celsius output=month_max_lst \
  expression="if(LST_Day_monthly_celsius == LST_Day_max_2015_2016, start_month(), null())" \
@@ -680,6 +694,13 @@ t.rast.series input=month_max_lst method=maximum output=max_lst_date
 
 # remove month_max_lst strds (we were only interested in the resulting aggregated map)
 t.remove -rf inputs=month_max_lst
+        </code>
+        <code class="python">
+gmod.Module("t.rast.mapcalc", flags="n", inputs="LST_Day_monthly_celsius", output="month_max_lst",
+            expression="if(LST_Day_monthly_celsius == LST_Day_max_2015_2016, start_month(), null())",
+            basename="month_max_lst")
+gmod.Module("t.rast.series", input="month_max_lst", method="maximum", output="max_lst_date")
+gmod.Module("t.remove", flags="rf", inputs="month_max_lst")
         </code>
     </pre>
     <p>Note that "-rf" forces (immediate) removal of both the STRDS (i.e.: the container table) and the maps registered in it.</p>
@@ -700,22 +721,52 @@ d.rast max_lst_date
 v.what.strds input=comm_colleges strds=LST_Day_monthly_celsius,LST_Day_mean_3month output=comm_colleges_lst
 v.db.select map=comm_colleges_lst file=ts_points.csv
         </code>
+        <code class="bash">
+v.what.strds input=comm_colleges strds=LST_Day_monthly_celsius,LST_Day_mean_3month \
+ output=comm_colleges_lst
+
+v.db.select map=comm_colleges_lst file=ts_points.csv
+        </code>
+        <code class="python">
+gmod.Module("v.what.strds", input="comm_colleges", output="comm_colleges_lst",
+            strds="LST_Day_monthly_celsius,LST_Day_mean_3month")
+gmod.Module("v.db.select", map="comm_colleges_lst", file="ts_points.csv")
+        </code>
     </pre>
     <p>Alternatively, for one STRDS:</p>
     <pre>
         <code class="neutral">
 t.rast.what points=comm_colleges strds=LST_Day_monthly_celsius output=trastwhat_output.csv null_value=NA separator=comma
         </code>
+        <code class="bash">
+t.rast.what points=comm_colleges strds=LST_Day_monthly_celsius output=trastwhat_output.csv \
+ null_value=NA separator=comma
+        </code>
+        <code class="python">
+gmod.Module("t.rast.what", points="comm_colleges", strds="LST_Day_monthly_celsius",
+            output="trastwhat_output.csv", null_value="NA", separator="comma")
+        </code>
     </pre>
     <p>We may also get spatially aggregated data for polygon vectors:</p>
     <pre>
         <code class="neutral">
+g.extension v.strds.stats
+v.strds.stats input=boundary_municp strds=LST_Day_monthly_celsius output=munic_aggr_lst method=average,minimum,maximum
+v.db.select map=munic_aggr_lst file=ts_polygons.csv
+        </code>
+        <code class="bash">
 # Install v.strds.stats add-on
 g.extension v.strds.stats
 
 v.strds.stats input=boundary_municp strds=LST_Day_monthly_celsius \
  output=munic_aggr_lst method=average,minimum,maximum
 v.db.select map=munic_aggr_lst file=ts_polygons.csv
+        </code>
+        <code class="python">
+gmod.Module("g.extension", extension="v.strds.stats")
+gmod.Module("v.strds.stats", input="boundary_municp", output="munic_aggr_lst",
+            strds="LST_Day_monthly_celsius", method="average,minimum,maximum")
+gmod.Module("v.db.select", map="munic_aggr_lst", file="ts_polygons.csv")
         </code>
     </pre>
     </p>
