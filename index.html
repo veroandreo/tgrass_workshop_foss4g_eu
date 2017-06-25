@@ -745,9 +745,11 @@ gmod.Module("t.rast.series", input="LST_Day_monthly_celsius",
             output="LST_Day_max" method="maximum")
         </code>
     </pre>
-<!--
-    LST_Day_max map here
--->
+    </pre>
+    <div class="imagebox">
+        <img style="width: 70%;" src="figures/month_max_lst.png" alt="Month of maximum LST" title="Month of maximum LST"><br>
+        Month of maximum LST for the period 2015-2016
+    </div>
     <p>Now, by means of the spatio-temporal algebra, we will get the month in which the absolute maximum LST occurred. For that, we will first compare our <tt>LST_Day_monthly_celsius</tt> STRDS with the map of absolute maximum LST <tt>LST_Day_max</tt>. If they coincide, we keep the month for that pixel, otherwise it will be NULL. Then, we aggregate the resulting <tt>month_max_lst</tt> STRDS with <tt>t.rast.series method=maximum</tt> and we get the map with the pixelwise month in which the absolute maximum LST have occurred in the past two years. Finally, we remove the intermediate STRDS, since we are only interested in the aggregated map</p>
     <pre>
         <code class="neutral">
