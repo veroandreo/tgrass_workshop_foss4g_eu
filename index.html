@@ -24,7 +24,7 @@
 <style type="text/css">
 .hljs{
     display: none;
-    /*padding: 1em;*/
+    /*padding: 0em;*/
 }
 </style>
 
@@ -34,7 +34,7 @@
 
   <div id="container">
     <a href="https://europe.foss4g.org/2017/" title="FOSS4G EU 2017"><img src="foss4g_eu_2017.png" width="22%" height="22%" align="left" alt="FOSS4G EU 2017 logo">
-    </a><a href="https://grass.osgeo.org" title="GRASS GIS"><img src="grassgis_logo_colorlogo_text_whitebg.png" width="19%" height="19%" align="right" alt="GRASS GIS logo"></a>
+    </a><a href="https://grass.osgeo.org" title="GRASS GIS"><img src="grassgis_logo_colorlogo_text_whitebg.png" width="18.5%" height="18.5%" align="right" alt="GRASS GIS logo"></a>
     <h1 align="center">TGRASS: temporal data processing with GRASS GIS</h1>
     <h2 class="notoc" align="center">FOSS4G Europe 2017 workshop</h2>
     <p align="center">
@@ -50,9 +50,6 @@
     <ul>
         <li><a href="#grassgisintro">Introduction to GRASS GIS</a></li>
         <li><a href="#temporalintro">Introduction to GRASS Temporal Framework</a></li>
-    <!--
-        links to "traditional" presentations for both introductions (?)
-    -->
         <li><a href="#temporalhands">Hands-on to raster time series processing</a></li>
     </ul>
     </p>
@@ -95,16 +92,15 @@
     A <b>LOCATION</b> is defined by its coordinate system, map projection and geographical boundaries.<br>
     In a <b>MAPSET</b> you can organize GIS maps thematically or geographically or by project or whatever.<br>
     <div class="imagebox">
-	    <!-- TODO: add some padding -->
-        <img style="width: 700px;" src="figures/grass_database.png" alt="GRASS DATABASE, LOCATIONs, and MAPSETs" title="GRASS DATABASE, LOCATIONs, and MAPSETs"><br>
+        <img style="width: 65%;" src="figures/grass_database.png" alt="GRASS DATABASE, LOCATIONs, and MAPSETs" title="GRASS DATABASE, LOCATIONs, and MAPSETs"><br>
         GRASS DATABASE, LOCATIONs and MAPSETs
     </div>
 
     <h3>Raster and vector maps</h3>
     GRASS GIS is able to read most GIS data formats directly (mainly done through the GDAL library). GRASS GIS has its own internal formats to manage raster and vector data, so own data have to be imported or linked into a GRASS LOCATION/MAPSET.<br>
-    The <b>vector format is topological</b>, this means that adjacent geographic components in a single vector map are related to each other. For example, in a non-topological GIS if two areas shared a common border that border would be digitized twice and also stored in a duplicate manner. In a topological GIS such as GRASS GIS this border exists only once and is shared between these two areas. The topological representation of vector data helps to produce and maintain vector maps with clean geometry as well as it enables certain analyses that can not be conducted with non-topological or spaghetti data. <br>
+    The <b>vector format is topological</b>, this means that adjacent geographic components in a single vector map are related to each other. For example, in a non-topological GIS if two areas shared a common border that border would be digitized twice and also stored in a duplicate manner. In a topological GIS such as GRASS GIS this border exists only once and is shared between these two areas. The topological representation of vector data helps to produce and maintain vector maps with clean geometry as well as it enables certain analyses that can not be conducted with non-topological or spaghetti data.<br>
     <div class="imagebox">
-        <img style="width: 700px;" src="figures/datatypes.png" alt="Vector data types" title="Vector data types"><br>
+        <img style="width: 65%;" src="figures/datatypes.png" alt="Vector data types" title="Vector data types"><br>
         All vector data types in GRASS GIS
     </div>
 
@@ -195,7 +191,7 @@
     <h4>Graphical User Interface</h4>
     The GUI is the simpler way to approach GRASS GIS. The <a href="https://grass.osgeo.org/grass72/manuals/wxGUI.html" target="_blank">GRASS GIS GUI</a> is composed by two elements, the <code>Layer Manager</code> where you can find all the GRASS GIS modules and you can manage your data and, the <code>Map Display</code> where you can navigate, print and query your maps. It also comes with a Python shell for rapid prototyping.
     <div class="imagebox">
-        <img style="width: 98%;" src="figures/grass_gis_gui.png" alt="GRASS GIS GUI" title="GRASS GIS GUI"><br>
+        <img style="width: 80%;" src="figures/grass_gis_gui.png" alt="GRASS GIS GUI" title="GRASS GIS GUI"><br>
         GRASS GIS Graphical User Interface (GUI)
     </div>
     Otherwise you can also use GRASS GIS inside QGIS by either using the <code>GRASS GIS plugin</code> or through <code>Processing</code>.
@@ -264,7 +260,7 @@ r.colors(map=output, color="elevation")
 	</ul>
     <h4>Absolute time vs relative time</h4>
     <p>
-    Two time definitions are used here:
+    Two time definitions are used:
     <table style="width:70%" border="1" align="center" bgcolor="#FFFFFF">
       <tr>
         <th>Absolute time</th>
@@ -293,7 +289,7 @@ r.colors(map=output, color="elevation")
           <td>Defined by start time</td>
       </tr>
       <tr>
-          <td>Support for gaps, Allows overlapping, Might contain time instances, Irregularly spaced in time</td>
+          <td>Support for gaps, allow overlapping, might contain time instances, might be irregularly spaced in time</td>
           <td>Punctual event</td>
       </tr>
     </table>
@@ -398,6 +394,7 @@ g.list type=raster pattern="MOD11B3*"
 import grass.pygrass.modules as gmod
 import os
 from subprocess import PIPE
+
 # Set variables
 # home
 HOME=os.path.expanduser('~')
@@ -426,16 +423,23 @@ g.region -p vector=nc_state
 g.region -p raster=MOD11B3.A2015060.h11v05.single_LST_Day_6km
         </code>
         <code class="bash">
-# change color palette from grey to viridis
+# Change color palette from grey to viridis
 r.colors MOD11B3.A2015060.h11v05.single_LST_Day_6km color=viridis
-# set region to NC (g.region -d)
+
+# Set region to NC (g.region -d)
 g.region -p vector=nc_state
-# optionally, to the full extent of one of the raster maps
+
+# Optionally, to the full extent of one of the raster maps
 g.region -p raster=MOD11B3.A2015060.h11v05.single_LST_Day_6km
         </code>
         <code class="python">
+# Change color palette from grey to viridis
 gmod.Module("r.colors", map="MOD11B3.A2015060.h11v05.single_LST_Day_6km", color="viridis")
+
+# Set region to NC
 gmod.Module("g.region", flags="p", vector="nc_state")
+
+# Optionally, to the full extent of one of the raster maps
 gmod.Module("g.region", flags="p", raster="MOD11B3.A2015060.h11v05.single_LST_Day_6km")
         </code>
     </pre>
@@ -444,17 +448,23 @@ gmod.Module("g.region", flags="p", raster="MOD11B3.A2015060.h11v05.single_LST_Da
         <code class="neutral">
 # open a monitor
 d.mon wx0
+
 # display raster map
 d.rast map=MOD11B3.A2015060.h11v05.single_LST_Day_6km
+
 # display vector map
 d.vect map=nc_state type=boundary
+
 # add raster legend
 d.legend -t -s -d -b raster=MOD11B3.A2015060.h11v05.single_LST_Day_6km \
  title=LST title_fontsize=20 font=sans fontsize=18
+
 # add scale bar
 d.barscale length=200 units=kilometers segment=4 fontsize=14
+
 # add North arrow
 d.northarrow style=1b text_color=black
+
 # add text
 d.text -b text="LST Day from MOD11B3.006 - North Carolina - March, 2015" \
  color=black bgcolor=229:229:229 align=cc font=sans size=8
@@ -465,7 +475,8 @@ d.text -b text="LST Day from MOD11B3.006 - North Carolina - March, 2015" \
     </pre>
     <p style="text-align:center">
     <div class="imagebox">
-        <img style="width: 700px;" src="figures/mod11b3_nc.png" alt="display LST map with decorations" title="display LST map with decorations">
+        <img style="width: 700px;" src="figures/mod11b3_nc.png" alt="display LST map with decorations" title="display LST map with decorations"><br>
+        MODIS LST map with decorations
     </div>
     </p>
     
@@ -500,19 +511,24 @@ t.info input=LST_Day_monthly
         </code>
         <code class="python">
 import grass.temporal as tgis
+
 # Create the temporal db connection using temporal library
 gmod.Module("t.connect", flags="d")
+
 # Initialize the temporal library
 tgis.init()
+
 # Create the new STRDS
 tgis.open_new_stds("LST_Day_monthly", "strds", "absolute", "Monthly LST Day 5.6 km",
                    "Monthly LST Day 5.6 km MOD11B3.006, 2015-2016", "mean", None, False)
 # Connect to the SQL database interface
 dbif = tgis.SQLDatabaseInterfaceConnection()
 dbif.connect()
+
 # Get and print the list of temporal dataset
 stds_list = tgis.get_dataset_list("strds", "absolute", dbif=dbif)
 print(stds_list)
+
 # Get and print info about the created strds
 dataset = tgis.dataset_factory("strds", "LST_Day_monthly@modis_lst")
 dataset.select(dbif)
@@ -559,24 +575,21 @@ t.register -i input=LST_Day_monthly \
  start="2015-01-01" increment="1 months"
         </code>
     </pre>
-    <p>Let's see our STRDS graphically. We will use the <a href="https://grass.osgeo.org/grass72/manuals/g.gui.timeline.html" target="_blank">g.gui.timeline</a> tool.</p>
+    <p>Let's see our STRDS graphically. We will use the <a href="https://grass.osgeo.org/grass72/manuals/g.gui.timeline.html" target="_blank">g.gui.timeline</a> tool. The tool g.gui.timeline is under the <em>Temporal</em> menu, in <em>GUI Tools</em> section. It can be called from the terminal with: <tt>g.gui.timeline --ui</tt>. To plot a STDS, it is necessary to select it first from the dropdown list and then click <em>Draw</em>. Alternatively, you can also get a 3D representation of the STDS (i.e.: x, y and time) by checking the 3D box. To change the padding settings of the plot you can click over the icon indicated bellow in the GUI tab.</p>
     <pre>
         <code class="neutral">
 g.gui.timeline inputs=LST_Day_monthly
         </code>
         <code class="gui">
-The tool g.gui.timeline is under the <em>Temporal</em> menu, in the GUI Tools section. 
-To plot a STDS, it is necessary to  select it first from the dropdown list and then 
-click <em>Draw</em>. Alternatively, you can also get a 3D representation by checking 
-the 3D plot box. To change the spacing settings of the plot you can click over the 
-icon indicated bellow in 3.
 <div class="imagebox">
-<img style="width: 700px;" src="figures/workflow_g_gui_timeline.png" alt="Workflow for plotting STRDS with g.gui.timeline" title="Workflow for plotting STRDS with g.gui.timeline">
+<img style="width: 700px;" src="figures/workflow_g_gui_timeline.png" alt="Workflow for plotting STRDS with g.gui.timeline" title="Workflow for plotting STRDS with g.gui.timeline"><br>
+Workflow for plotting STRDS with g.gui.timeline
 </div>
 		</code>
     </pre>
     <div class="imagebox">
         <img style="width: 60%;" src="figures/g_gui_timeline_lst_monthly.png" alt="Timeline plot" title="Timeline plot for LST_Day_monthly time series"><br>
+        Timeline plot for LST_Day_monthly time series
     </div>
     
     <h3>Temporal data analysis</h3>
@@ -694,12 +707,12 @@ gmod.Module("t.rast.colors", input="LST_Day_monthly_celsius", color="celsius")
     </pre>
     <div class="imagebox">
         <img style="width: 70%;" src="figures/lst_modis_celsius.png" alt="LST MODIS in degrees Celsius" title="LST MODIS in degrees Celsius"><br>
+        MODIS LST re-scaled to degrees Celsius
     </div>
     <p>Alternatively, we could have used <a href="https://grass.osgeo.org/grass72/manuals/t.rast.mapcalc.html" target="_blank">t.rast.mapcalc</a> to perform the previous transformation:</p>
     <pre>
         <code class="neutral">
-t.rast.mapcalc input=LST_Day_monthly output=LST_Day_monthly_celsius basename=LST_Day_monthly_celsius \
- expression="LST_Day_monthly*0.02 - 273.15"
+t.rast.mapcalc input=LST_Day_monthly output=LST_Day_monthly_celsius basename=LST_Day_monthly_celsius expression="LST_Day_monthly*0.02 - 273.15"
 		</code>
 	</pre>
 	
@@ -708,11 +721,23 @@ t.rast.mapcalc input=LST_Day_monthly output=LST_Day_monthly_celsius basename=LST
     <pre>
         <code class="neutral">
 t.rast.series input=LST_Day_monthly_celsius output=LST_Day_max method=maximum
+r.colors map=LST_Day_max color=celsius
+d.mon wx0
+d.rast LST_Day_max
+d.legend LST_Day_max
         </code>
         <code class="bash">
 # Get maximum LST in the STRDS
 t.rast.series input=LST_Day_monthly_celsius \
  output=LST_Day_max method=maximum
+
+# Change color pallete to celsius
+r.colors map=LST_Day_max color=celsius
+
+# Display the new map
+d.mon wx0
+d.rast LST_Day_max
+d.legend LST_Day_max
         </code>
         <code class="python">
 # Get maximum LST in the STRDS
@@ -720,6 +745,9 @@ gmod.Module("t.rast.series", input="LST_Day_monthly_celsius",
             output="LST_Day_max" method="maximum")
         </code>
     </pre>
+<!--
+    LST_Day_max map here
+-->
     <p>Now, by means of the spatio-temporal algebra, we will get the month in which the absolute maximum LST occurred. For that, we will first compare our <tt>LST_Day_monthly_celsius</tt> STRDS with the map of absolute maximum LST <tt>LST_Day_max</tt>. If they coincide, we keep the month for that pixel, otherwise it will be NULL. Then, we aggregate the resulting <tt>month_max_lst</tt> STRDS with <tt>t.rast.series method=maximum</tt> and we get the map with the pixelwise month in which the absolute maximum LST have occurred in the past two years. Finally, we remove the intermediate STRDS, since we are only interested in the aggregated map</p>
     <pre>
         <code class="neutral">
@@ -732,6 +760,9 @@ t.remove -rf inputs=month_max_lst
 t.rast.mapcalc -n inputs=LST_Day_monthly_celsius output=month_max_lst \
  expression="if(LST_Day_monthly_celsius == LST_Day_max, start_month(), null())" \
  basename=month_max_lst
+
+# Get basic info
+t.info month_max_lst
 
 # Map with month of overall maximum
 t.rast.series input=month_max_lst method=maximum output=max_lst_date
@@ -758,10 +789,8 @@ gmod.Module("t.remove", flags="rf", inputs="month_max_lst")
         <code class="neutral">
 d.mon wx0
 d.rast max_lst_date
+d.legend max_lst_date
         </code>
-        <code class="gui">
-        <!-- # add image -->
-		</code>
     </pre>
     <!-- plot here -->
     <p>The other module that allows us to perform temporal aggregations is <a href="https://grass.osgeo.org/grass72/manuals/t.rast.aggregate.html" target="_blank">t.rast.aggregate</a>. With this module we are able to aggregate raster maps in our STRDS with different granularities. Note that this module also has the option <tt>where</tt> that allow us to set specific dates for the aggregation. We will use this module to get 3-month and 6-month average LST.</p>
