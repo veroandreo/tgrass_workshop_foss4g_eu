@@ -873,28 +873,28 @@ gmod.Module("t.rast.list", input="LST_Day_mean_6month")
     <p>Now, we will extract the 3-month mean LST for points in a vector map. We will use the vector map <tt>points_of_interest</tt> that is already available in the PERMANENT mapset of NC Location. There are different commands that allow us to perform this task, but we'll use <a href="" target="_blank">v.what.strds</a>. This module allows to extract values for more than one STRDS and (optionally) to write the output to the attribute table of the input vector map.</p>
     <pre>
         <code class="neutral">
-v.what.strds input=geology strds=LST_Day_mean_3month,LST_Day_mean_6month output=geology_lst
-v.db.select map=geology_lst file=ts_points.csv
+v.what.strds input=points_of_interest strds=LST_Day_mean_3month,LST_Day_mean_6month output=points_of_interest_lst
+v.db.select map=points_of_interest_lst file=ts_points.csv
         </code>
         <code class="bash">
 # Extract data from raster maps in the STRDSs and write to a new vector map
-v.what.strds input=geology strds=LST_Day_mean_3month,LST_Day_mean_6month \
- output=geology_lst
+v.what.strds input=points_of_interest strds=LST_Day_mean_3month,LST_Day_mean_6month \
+ output=points_of_interest_lst
 
 # Save the attribute table of the new vector into a csv file
-v.db.select map=geology_lst file=ts_points.csv
+v.db.select map=points_of_interest_lst file=ts_points.csv
 
 # Alternatively, update attr table of the input vector map
-v.what.strds -u input=geology strds=LST_Day_mean_3month,LST_Day_mean_6month
-v.db.select map=geology
+v.what.strds -u input=points_of_interest strds=LST_Day_mean_3month,LST_Day_mean_6month
+v.db.select map=points_of_interest
         </code>
         <code class="python">
 # Extract data from raster maps in the STRDSs and write to a new vector map
-gmod.Module("v.what.strds", input="geology", output="geology_lst",
+gmod.Module("v.what.strds", input="points_of_interest", output="points_of_interest_lst",
             strds="LST_Day_mean_3month,LST_Day_mean_6month")
 
 # Save the attribute table of the new vector into a csv file
-gmod.Module("v.db.select", map="geology_lst", file="ts_points.csv")
+gmod.Module("v.db.select", map="points_of_interest_lst", file="ts_points.csv")
         </code>
     </pre>
     <p>Alternatively, we could use <a href="" target="_blank">t.rast.what</a> that samples a STRDS at specific vector point coordinates and write the output to stdout using different layouts. For example:</p>
@@ -916,30 +916,30 @@ gmod.Module("t.rast.what", points="points_of_interest", strds="LST_Day_mean_6mon
     <pre>
         <code class="neutral">
 g.extension v.strds.stats
-v.strds.stats input=boundary_municp strds=LST_Day_monthly_celsius output=munic_aggr_lst method=average,minimum,maximum
-v.db.select map=munic_aggr_lst file=ts_polygons.csv
+v.strds.stats input=geology strds=LST_Day_monthly_celsius output=geology_aggr_lst method=average,minimum,maximum
+v.db.select map=geology_aggr_lst file=ts_polygons.csv
         </code>
         <code class="bash">
 # Install v.strds.stats add-on
 g.extension v.strds.stats
 
 # Extract mean, max and min LST for municipalities
-v.strds.stats input=boundary_municp strds=LST_Day_monthly_celsius \
- output=munic_aggr_lst method=average,minimum,maximum
+v.strds.stats input=geology strds=LST_Day_monthly_celsius \
+ output=geology_aggr_lst method=average,minimum,maximum
 
 # Save the attribute table of the new vector into a csv file
-v.db.select map=munic_aggr_lst file=ts_polygons.csv
+v.db.select map=geology_aggr_lst file=ts_polygons.csv
         </code>
         <code class="python">
 # Install v.strds.stats add-on
 gmod.Module("g.extension", extension="v.strds.stats")
 
 # Extract mean, max and min LST for municipalities
-gmod.Module("v.strds.stats", input="boundary_municp", output="munic_aggr_lst",
+gmod.Module("v.strds.stats", input="geology", output="geology_aggr_lst",
             strds="LST_Day_monthly_celsius", method="average,minimum,maximum")
 
 # Save the attribute table of the new vector into a csv file
-gmod.Module("v.db.select", map="munic_aggr_lst", file="ts_polygons.csv")
+gmod.Module("v.db.select", map="geology_aggr_lst", file="ts_polygons.csv")
         </code>
     </pre>
     </p>
