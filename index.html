@@ -84,7 +84,7 @@
 
     <p>
     <h2><a name="grassgisintro">GRASS GIS introduction</a></h2>
-    
+
     Working with GRASS GIS is not much different from any other GIS. Just a few commonly used terms need to be introduced first.
 
     <h3>GRASS DATABASE, LOCATION and MAPSET</h3>
@@ -172,7 +172,7 @@
 		  <td>t.rast.aggregate: raster time series aggregation</td>
       </tr>
     </table>
-    
+
     <h3>Region and Mask</h3>
     The <b>computational (or current) region</b> is the <i>actual setting of the region boundaries and the actual raster resolution</i>.<br>
     The raster input maps are automatically cropped/padded and rescaled to match the current region, the output maps have their bounds and resolution equal to those of the current computational region, while vector maps are always considered completely.
@@ -234,7 +234,7 @@ r.colors(map=output, color="elevation")
     It is possible to run GRASS GIS modules through the web using the <a href="https://en.wikipedia.org/wiki/Web_Processing_Service" target="_blank">Web Processing Service</a> (WPS is an <a href="https://en.wikipedia.org/wiki/Open_Geospatial_Consortium" target="_blank">OGC</a> standard). The Free and Open Source software <a href="http://zoo-project.org/" target="_blank">ZOO-Project</a> and <a href="http://pywps.org/" target="_blank">PyWPS</a> allow the user to run GRASS GIS commands in a simple way.
 
     <h2><a name="temporalintro">Temporal GRASS GIS introduction</a></h2>
-    
+
     <p>
 	GRASS GIS is the first temporal Open Source GIS with capabilities to manage, analyze, process and visualize spatio-temporal data, as well as, the temporal relationships among time series.
 
@@ -367,11 +367,11 @@ your_NASA_password
     </tt>
     </p>
     <p>
-    The <a href="https://grass.osgeo.org/grass72/manuals/addons/r.modis.download.html">r.modis.download</a> directly downloads from the MODIS data server: 
+    The <a href="https://grass.osgeo.org/grass72/manuals/addons/r.modis.download.html">r.modis.download</a> directly downloads from the MODIS data server:
     <pre>
         <code class="neutral">
 r.modis.download -g settings=$HOME/gisdata/SETTING product=lst_terra_monthly_5600 tiles=h11v05 startday="2015-01-01" endday="2016-12-31" folder=$HOME/lst_monthly
-r.modis.import -w files=$HOME/lst_monthly/listfileMOD11B3.006.txt spectral="( 1 1 0 0 1 1 )" outfile=$HOME/lst_monthly/monthly_lst_to_register.txt
+r.modis.import -w files=$HOME/lst_monthly/listfileMOD11B3.006.txt spectral="( 1 )" outfile=$HOME/lst_monthly/monthly_lst_to_register.txt
 g.list type=raster pattern="MOD11B3*"
         </code>
         <code class="bash">
@@ -383,7 +383,7 @@ r.modis.download -g settings=$HOME/gisdata/SETTING \
 
 # Reproject from Sinusoidal to current NC projection and import maps into NC Location (Day and Night overpasses)
 r.modis.import -w files=$HOME/lst_monthly/listfileMOD11B3.006.txt \
- spectral="( 1 1 0 0 1 1 )" \
+ spectral="( 1 )" \
  outfile=$HOME/lst_monthly/monthly_lst_to_register.txt
 
 # Check list of imported maps
@@ -406,20 +406,21 @@ gmod.Module("r.modis.download", flags="g", settings=os.path.join(HOME, 'gisdata'
  endday="2016-12-31", folder=os.path.join(HOME, lst_monthly)
 
 # Reproject and import maps into NC Location (Day and Night)
-gmod.Module("r.modis.import", flags="w" files=os.path.join(HOME, 'lst_monthly', 'listfileMOD11B3.006.txt'),
- spectral="( 1 1 0 0 1 1 )", outfile=os.path.join(HOME, 'lst_monthly', 'monthly_lst_to_register.txt'))
+gmod.Module("r.modis.import", flags="w", files=os.path.join(HOME, 'lst_monthly', 'listfileMOD11B3.006.txt'),
+ spectral="( 1 )", outfile=os.path.join(HOME, 'lst_monthly', 'monthly_lst_to_register.txt'))
 
 # Check list of imported maps
 glist = gmod.Module("g.list", type="raster", pattern="MOD11B3*", stdout_=PIPE, stderr_=PIPE)
- print(glist.outputs["stdout"].value)
+print(glist.outputs["stdout"].value)
         </code>
     </pre>
-    <p>We will now visualize one of the MODIS LST images and add different map decorations. We first change the color palette from grey to viridis and set the computational region to the state of North Carolina (using <tt>nc_state</tt> vector map).</p>
+    <p>We will now visualize one of the MODIS LST images and add different map decorations. We first change the color palette from grey to viridis and set the computational region to the state of North Carolina (using <tt>boundary_state</tt> vector map).</p>
     <p>
     <pre>
         <code class="neutral">
 r.colors MOD11B3.A2015060.h11v05.single_LST_Day_6km color=viridis
-g.region -p vector=nc_state
+g.region -p vector=boundary_state
+<!-- TODO I think this should be removed, it created confusion -->
 g.region -p raster=MOD11B3.A2015060.h11v05.single_LST_Day_6km
         </code>
         <code class="bash">
@@ -427,7 +428,7 @@ g.region -p raster=MOD11B3.A2015060.h11v05.single_LST_Day_6km
 r.colors MOD11B3.A2015060.h11v05.single_LST_Day_6km color=viridis
 
 # Set region to NC (g.region -d)
-g.region -p vector=nc_state
+g.region -p vector=boundary_state
 
 # Optionally, to the full extent of one of the raster maps
 g.region -p raster=MOD11B3.A2015060.h11v05.single_LST_Day_6km
@@ -437,7 +438,7 @@ g.region -p raster=MOD11B3.A2015060.h11v05.single_LST_Day_6km
 gmod.Module("r.colors", map="MOD11B3.A2015060.h11v05.single_LST_Day_6km", color="viridis")
 
 # Set region to NC
-gmod.Module("g.region", flags="p", vector="nc_state")
+gmod.Module("g.region", flags="p", vector="boundary_state")
 
 # Optionally, to the full extent of one of the raster maps
 gmod.Module("g.region", flags="p", raster="MOD11B3.A2015060.h11v05.single_LST_Day_6km")
@@ -453,7 +454,7 @@ d.mon wx0
 d.rast map=MOD11B3.A2015060.h11v05.single_LST_Day_6km
 
 # display vector map
-d.vect map=nc_state type=boundary
+d.vect map=boundary_state type=boundary
 
 # add raster legend
 d.legend -t -s -d -b raster=MOD11B3.A2015060.h11v05.single_LST_Day_6km \
@@ -479,14 +480,14 @@ d.text -b text="LST Day from MOD11B3.006 - North Carolina - March, 2015" \
         MODIS LST map with decorations
     </div>
     </p>
-    
+
     <h3>Create temporal raster dataset (STRDS)</h3>
     <p>
     To create a space-time raster data set (STRDS) implies to create an SQLite table in the temporal database, i.e.: a container table, that will hold our raster time series and will allow us to easily handle huge amounts of maps by only using the STRDS as input in temporal commands.
     <p>
     If this is the first time you use the temporal framework, you need to create and set the connection to the temporal database by means of <a href="https://grass.osgeo.org/grass72/manuals/t.connect.html" target="_blank">t.connect</a>. As the temporal database is mapset specific, you'll need to repeat this step in each mapset in which you'll have STDSs.
     <p>
-    Once the connection is set, you can create the empty STRDS, i.e.: the empty table, in which you'll put (aka: register) all your time series maps afterwards. For the creation of any STDS, we need to specify which <b>type of maps</b> (raster, raster3d or vector) the STDS will contain and which <b>type of time</b> (absolute or relative) the maps represent. 
+    Once the connection is set, you can create the empty STRDS, i.e.: the empty table, in which you'll put (aka: register) all your time series maps afterwards. For the creation of any STDS, we need to specify which <b>type of maps</b> (raster, raster3d or vector) the STDS will contain and which <b>type of time</b> (absolute or relative) the maps represent.
     <pre>
         <code class="neutral">
 t.connect -d
@@ -556,9 +557,9 @@ t.rast.list LST_Day_monthly
         </code>
         <code class="python">
 # Register maps using the Python function
-tgis.register_maps_in_space_time_dataset(type="strds", name="LST_Day_monthly@modis_lst",
-                                         file="$HOME/lst_monthly/monthly_lst_to_tregister.txt")
-                                         
+gmod.Module("t.register", input="LST_Day_monthly@modis_lst",
+            file=os.path.join(HOME, 'lst_monthly', 'monthly_lst_to_register.txt'))
+
 # Get info using the modules
 gmod.Module("t.info", input="LST_Day_monthly")
 
@@ -591,7 +592,7 @@ Workflow for plotting STRDS with g.gui.timeline
         <img style="width: 60%;" src="figures/g_gui_timeline_lst_monthly.png" alt="Timeline plot" title="Timeline plot for LST_Day_monthly time series"><br>
         Timeline plot for LST_Day_monthly time series
     </div>
-    
+
     <h3>Temporal data analysis</h3>
     <p>
 	One basic but very important function when handling hundreds or thousands of maps is the listing function, i.e.: we usually need to list maps that meet a certain condition. For example, we need maps which start month is June, maps with minimum values lower than 100, and so on. The GRASS GIS Temporal framework has different commands for that task: <a href="https://grass.osgeo.org/grass72/manuals/t.list.html" target="_blank">t.list</a> for listing STDS and maps registered in the temporal database, <a href="https://grass.osgeo.org/grass72/manuals/t.rast.list.html" target="_blank">t.rast.list</a> for raster time series and, <a href="https://grass.osgeo.org/grass72/manuals/t.vect.list.html" target="_blank">t.rast.list</a> for vector time series. All these commands allow us to list STDSs and/or maps according to different criteria. Let's see some examples with our <tt>LST_Day_monthly</tt> STRDS:</p>
@@ -628,7 +629,7 @@ MOD11B3.A2015213.h11v05.single_LST_Day_6km|2015-08-01 00:00:00
 # Maps from January
 t.rast.list input=LST_Day_monthly columns=name,start_time \
  where="strftime('%m', start_time)='01'"
- 
+
 name|start_time
 MOD11B3.A2015001.h11v05.single_LST_Day_6km|2015-01-01 00:00:00
 MOD11B3.A2016001.h11v05.single_LST_Day_6km|2016-01-01 00:00:00
@@ -647,7 +648,7 @@ MOD11B3.A2016153.h11v05.single_LST_Day_6km|2016-06-01 00:00:00
     <pre>
         <code class="neutral">
 t.rast.univar input=LST_Day_monthly
-			
+
 id|start|end|mean|min|max|mean_of_abs|stddev|variance|coeff_var|sum|null_cells|cells
 MOD11B3.A2015001.h11v05.single_LST_Day_6km@modis_lst|2015-01-01 00:00:00|2015-02-01 00:00:00|13920.4954589617|13022|14396|13920.4954589617|204.922713367766|41993.3184540075|1.47209353267553|329539889|51297|74970
 MOD11B3.A2015032.h11v05.single_LST_Day_6km@modis_lst|2015-02-01 00:00:00|2015-03-01 00:00:00|13850.5832593907|12950|14522|13850.5832593907|269.511406162359|72636.3980516119|1.94584878567933|327801754|51303|74970
@@ -668,12 +669,23 @@ t.rast.univar input=LST_Day_monthly separator=comma output=stats_LST_Day_monthly
 # Print univariate stats for maps within STRDS
 t.rast.univar input=LST_Day_monthly
 
-# Get extended statistics and write the output to a csv file
-t.rast.univar -e input=LST_Day_monthly separator=comma output=stats_LST_Day_monthly.csv
+# Get extended statistics
+t.rast.univar -e input=LST_Day_monthly
+
+# Write the univariate stats output to a csv file
+t.rast.univar input=LST_Day_monthly separator=comma output=stats_LST_Day_monthly.csv
         </code>
         <code class="python">
 # Print univarite statistics with the Python library
 tgis.print_gridded_dataset_univar_statistics("strds", "LST_Day_monthly@modis_lst", None, None, False, False, ",", False)
+
+# Print extended univarite statistics with the Python library
+tgis.print_gridded_dataset_univar_statistics("strds", "LST_Day_monthly@modis_lst", None, None, True, False, ",", False)
+
+<!-- TODO this doesn't work for me
+# Write the univariate stats output to a csv file
+tgis.print_gridded_dataset_univar_statistics("strds", "LST_Day_monthly@modis_lst", 'stats_LST_Day_monthly.csv', None, False, False, ",", False)
+-->
         </code>
     </pre>
     <p>However, those statistics are a bit difficult to directly interpret since values are in &deg;K*50. Let's re-scale the data to &deg;C and run the previous command again. Then, we will set a proper color palette for the STRDS and display one map.</p>
@@ -701,7 +713,7 @@ gmod.Module("t.rast.algebra", basename="LST_Day_monthly_celsius",
             expression="LST_Day_monthly_celsius = (LST_Day_monthly*0.02) - 273.15")
 
 # Print univarite statistics with the Python library
-tgis.print_gridded_dataset_univar_statistics("strds", "LST_Day_monthly@modis_lst", None, None, False, False, ",", False)
+tgis.print_gridded_dataset_univar_statistics("strds", "LST_Day_monthly_celsius@modis_lst", None, None, False, False, ",", False)
 gmod.Module("t.rast.colors", input="LST_Day_monthly_celsius", color="celsius")
         </code>
     </pre>
@@ -715,7 +727,7 @@ gmod.Module("t.rast.colors", input="LST_Day_monthly_celsius", color="celsius")
 t.rast.mapcalc input=LST_Day_monthly output=LST_Day_monthly_celsius basename=LST_Day_monthly_celsius expression="LST_Day_monthly*0.02 - 273.15"
 		</code>
 	</pre>
-	
+
     <h3>Temporal aggregations</h3>
     <p>There are basically two dedicated modules to perform temporal aggregations in GRASS GIS. The first that we will use is <a href="https://grass.osgeo.org/grass72/manuals/t.rast.series.html" target="_blank">t.rast.series</a>. This module is a wrapper for <a href="https://grass.osgeo.org/grass72/manuals/r.series.html" target="_blank">r.series</a> and allows us to aggregate our STRDS or parts of it with different methods. We will use it now to obtain the absolute maximum LST in the past two years.</p>
     <pre>
@@ -742,7 +754,10 @@ d.legend LST_Day_max
         <code class="python">
 # Get maximum LST in the STRDS
 gmod.Module("t.rast.series", input="LST_Day_monthly_celsius",
-            output="LST_Day_max" method="maximum")
+            output="LST_Day_max", method="maximum")
+
+# Change color pallete to celsius
+gmod.Module("r.colors", map="LST_Day_max", color="celsius")
         </code>
     </pre>
     </pre>
@@ -775,9 +790,9 @@ t.remove -rf inputs=month_max_lst
         <code class="python">
 # New strds with month of overall maximum
 gmod.Module("t.rast.mapcalc", flags="n", inputs="LST_Day_monthly_celsius", output="month_max_lst",
-            expression="if(LST_Day_monthly_celsius == LST_Day_max_2015_2016, start_month(), null())",
+            expression="if(LST_Day_monthly_celsius == LST_Day_max, start_month(), null())",
             basename="month_max_lst")
-            
+
 # Map with month of overall maximum
 gmod.Module("t.rast.series", input="month_max_lst", method="maximum", output="max_lst_date")
 
@@ -836,49 +851,63 @@ t.rast.list LST_Day_mean_6month
 gmod.Module("t.rast.aggregate", input="LST_Day_monthly_celsius", output="LST_Day_mean_3month",
             basename="LST_Day_mean_3month", suffix="gran", method="average", granularity="3 months")
 
+# Get and print info about LST_Day_mean_3month strds in shell output format
+dataset = tgis.dataset_factory("strds", "LST_Day_mean_3month@modis_lst")
+dataset.select(dbif)
+dataset.print_shell_info()
+
+# Print list of maps
+tgis.list_maps_of_stds("strds", "LST_Day_mean_3month@modis_lst", "name,mapset,start_time,end_time",
+                       "start_time", "", "|", "cols", True, "no")
 # 6-month mean LST
 gmod.Module("t.rast.aggregate", input="LST_Day_monthly_celsius", output="LST_Day_mean_6month",
             basename="LST_Day_mean_6month", suffix="gran", method="average", granularity="6 months")
+
+# Get and print info about LST_Day_mean_6month strds
+gmod.Module("t.info", input="LST_Day_mean_6month")
+
+# Print list of maps
+gmod.Module("t.rast.list", input="LST_Day_mean_6month")
         </code>
     </pre>
-    <p>Now, we will extract the 3-month mean LST for points in a vector map. We will use the vector map <tt>comm_colleges</tt> that is already available in the PERMANENT mapset of NC Location. There are different commands that allow us to perform this task, but we'll use <a href="" target="_blank">v.what.strds</a>. This module allows to extract values for more than one STRDS and (optionally) to write the output to the attribute table of the input vector map.</p>
+    <p>Now, we will extract the 3-month mean LST for points in a vector map. We will use the vector map <tt>points_of_interest</tt> that is already available in the PERMANENT mapset of NC Location. There are different commands that allow us to perform this task, but we'll use <a href="" target="_blank">v.what.strds</a>. This module allows to extract values for more than one STRDS and (optionally) to write the output to the attribute table of the input vector map.</p>
     <pre>
         <code class="neutral">
-v.what.strds input=comm_colleges strds=LST_Day_mean_3month,LST_Day_mean_6month output=comm_colleges_lst
-v.db.select map=comm_colleges_lst file=ts_points.csv
+v.what.strds input=points_of_interest strds=LST_Day_mean_3month,LST_Day_mean_6month output=points_of_interest_lst
+v.db.select map=points_of_interest_lst file=ts_points.csv
         </code>
         <code class="bash">
 # Extract data from raster maps in the STRDSs and write to a new vector map
-v.what.strds input=comm_colleges strds=LST_Day_mean_3month,LST_Day_mean_6month \
- output=comm_colleges_lst
- 
+v.what.strds input=points_of_interest strds=LST_Day_mean_3month,LST_Day_mean_6month \
+ output=points_of_interest_lst
+
 # Save the attribute table of the new vector into a csv file
-v.db.select map=comm_colleges_lst file=ts_points.csv
+v.db.select map=points_of_interest_lst file=ts_points.csv
 
 # Alternatively, update attr table of the input vector map
-v.what.strds -u input=comm_colleges strds=LST_Day_mean_3month,LST_Day_mean_6month
-v.db.select map=comm_colleges
+v.what.strds -u input=points_of_interest strds=LST_Day_mean_3month,LST_Day_mean_6month
+v.db.select map=points_of_interest
         </code>
         <code class="python">
 # Extract data from raster maps in the STRDSs and write to a new vector map
-gmod.Module("v.what.strds", input="comm_colleges", output="comm_colleges_lst",
+gmod.Module("v.what.strds", input="points_of_interest", output="points_of_interest_lst",
             strds="LST_Day_mean_3month,LST_Day_mean_6month")
 
 # Save the attribute table of the new vector into a csv file
-gmod.Module("v.db.select", map="comm_colleges_lst", file="ts_points.csv")
+gmod.Module("v.db.select", map="points_of_interest_lst", file="ts_points.csv")
         </code>
     </pre>
     <p>Alternatively, we could use <a href="" target="_blank">t.rast.what</a> that samples a STRDS at specific vector point coordinates and write the output to stdout using different layouts. For example:</p>
     <pre>
         <code class="neutral">
-t.rast.what points=comm_colleges strds=LST_Day_mean_6month output=trastwhat_output.csv null_value=NA separator=comma
+t.rast.what points=points_of_interest strds=LST_Day_mean_6month output=trastwhat_output.csv null_value=NA separator=comma
         </code>
         <code class="bash">
-t.rast.what points=comm_colleges strds=LST_Day_mean_6month output=trastwhat_output.csv \
+t.rast.what points=points_of_interest strds=LST_Day_mean_6month output=trastwhat_output.csv \
  null_value=NA separator=comma
         </code>
         <code class="python">
-gmod.Module("t.rast.what", points="comm_colleges", strds="LST_Day_mean_6month",
+gmod.Module("t.rast.what", points="points_of_interest", strds="LST_Day_mean_6month",
             output="trastwhat_output.csv", null_value="NA", separator="comma")
         </code>
     </pre>
@@ -887,30 +916,30 @@ gmod.Module("t.rast.what", points="comm_colleges", strds="LST_Day_mean_6month",
     <pre>
         <code class="neutral">
 g.extension v.strds.stats
-v.strds.stats input=boundary_municp strds=LST_Day_monthly_celsius output=munic_aggr_lst method=average,minimum,maximum
-v.db.select map=munic_aggr_lst file=ts_polygons.csv
+v.strds.stats input=geology strds=LST_Day_monthly_celsius output=geology_aggr_lst method=average,minimum,maximum
+v.db.select map=geology_aggr_lst file=ts_polygons.csv
         </code>
         <code class="bash">
 # Install v.strds.stats add-on
 g.extension v.strds.stats
 
 # Extract mean, max and min LST for municipalities
-v.strds.stats input=boundary_municp strds=LST_Day_monthly_celsius \
- output=munic_aggr_lst method=average,minimum,maximum
+v.strds.stats input=geology strds=LST_Day_monthly_celsius \
+ output=geology_aggr_lst method=average,minimum,maximum
 
 # Save the attribute table of the new vector into a csv file
-v.db.select map=munic_aggr_lst file=ts_polygons.csv
+v.db.select map=geology_aggr_lst file=ts_polygons.csv
         </code>
         <code class="python">
 # Install v.strds.stats add-on
 gmod.Module("g.extension", extension="v.strds.stats")
 
 # Extract mean, max and min LST for municipalities
-gmod.Module("v.strds.stats", input="boundary_municp", output="munic_aggr_lst",
+gmod.Module("v.strds.stats", input="geology", output="geology_aggr_lst",
             strds="LST_Day_monthly_celsius", method="average,minimum,maximum")
 
 # Save the attribute table of the new vector into a csv file
-gmod.Module("v.db.select", map="munic_aggr_lst", file="ts_polygons.csv")
+gmod.Module("v.db.select", map="geology_aggr_lst", file="ts_polygons.csv")
         </code>
     </pre>
     </p>
