@@ -41,7 +41,7 @@
     <a href="https://veroandreo.wordpress.com/" target="_blank">Veronica Andreo</a>, <a href="http://www.lucadelu.org" target="_blank">Luca Delucchi</a> and <a href="https://www.mundialis.de/en/neteler/" target="_blank">Markus Neteler</a>
     </p>
     <p style="border-top-style: solid; border-bottom-style: solid; border-width: 5px; border-color: rgb(130, 130, 130); padding-top: 5px; padding_bottom: 5px;" align="center">
-    <a href="#lst-time-series-animation" title="lst time series animation"><img style="width: 25%;" src="animation_nc_zoom.gif" alt="NC to Wake LST animation"></a>
+    <a href="#lst-time-series-animation" title="lst time series animation"><img style="width: 25%;" src="figures/animation_nc_zoom.gif" alt="NC to Wake LST animation"></a>
     </p>
     <p>
     Course outline:
@@ -999,26 +999,48 @@ gmod.Module("v.db.select", map="geology_aggr_lst", file="ts_polygons.csv")
     <h3>Temporal data visualization</h3>
     <pre>
         <code class="neutral">
-g.gui.mapswipe
+g.gui.mapswipe first=LST_Day_monthly_celsius_6 second=LST_Day_monthly_celsius_12
         </code>
         <code class="gui">
-        <!-- # add image -->
+1. Select first and second map.
+2. Swipe as desired. Optionally you can change the swipe orientation or switch maps in the tools button.  
+3. Change to "Mirror mode" to see the exact same position in both maps.
+    <div class="imagebox">
+        <img style="width: 50%;" src="figures/g_gui_mapswipe_1.png" alt="g.gui.mapswipe first" title="g.gui.mapswipe first step"><br> 
+        <img style="width: 60%;" src="figures/g_gui_mapswipe_2.png" alt="g.gui.mapswipe second" title="g.gui.mapswipe second step"><br>
+        <img style="width: 60%;" src="figures/g_gui_mapswipe_3.png" alt="g.gui.mapswipe third" title="g.gui.mapswipe third step"><br>
+    </div> 
+
 		</code>
     </pre>
     <pre>
         <code class="neutral">
-g.gui.animation
+g.gui.animation strds=LST_Day_monthly_celsius@modis_lst
         </code>
         <code class="gui">
-        <!-- # add image -->
+    <div class="imagebox">
+        <img style="width: 60%;" src="figures/g_gui_animation_1.png" alt="g.gui.animation first" title="g.gui.animation first step"><br> 
+        <img style="width: 60%;" src="figures/g_gui_animation_2.png" alt="g.gui.animation second" title="g.gui.animation second step"><br>
+        <img style="width: 60%;" src="figures/g_gui_animation_3.png" alt="g.gui.animation third" title="g.gui.animation third step"><br>
+        <img style="width: 60%;" src="figures/g_gui_animation_4.png" alt="g.gui.animation fourth" title="g.gui.animation fourth step"><br>
+    </div> 
 		</code>
     </pre>
     <pre>
         <code class="neutral">
-g.gui.tplot
+g.gui.tplot strds=LST_Day_monthly_celsius@modis_lst coordinates=419604.018913,215736.80063
         </code>
         <code class="gui">
-        <!-- # add image -->
+1. Select the STRDS.
+2. Type coordinates or select a point in the display.
+3. Click Draw.
+4. Inspect values for specific dates.
+    <div class="imagebox">
+        <img style="width: 50%;" src="figures/g_gui_tplot_1.png" alt="g.gui.tplot first" title="g.gui.tplot first step"><br> 
+        <img style="width: 60%;" src="figures/g_gui_tplot_2.png" alt="g.gui.tplot second" title="g.gui.tplot second step"><br>
+        <img style="width: 60%;" src="figures/g_gui_tplot_3.png" alt="g.gui.tplot third" title="g.gui.tplot third step"><br>
+        <img style="width: 40%;" src="figures/g_gui_tplot_4.png" alt="g.gui.tplot fourth" title="g.gui.tplot fourth step"><br>
+    </div> 
 		</code>
     </pre>
     <h2>Other (very) useful links</h2>
