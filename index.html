@@ -301,9 +301,6 @@ r.colors(map=output, color="elevation")
 
     <h3>Workflow overview</h3>
     Now, how do we work with time series in GRASS GIS? Where do we start? Well, assuming we already have our maps in the GRASSDBASE, the first step is to set the connection to the temporal database. This is something we will need to do only once per mapset. After that, we create the STDSs, i.e.: the containers for the time series, and finally we assign time stamps to maps and register them in the STDS. After these basic steps, the following will depend on our specific objectives.    
-<!--
-MAKE A NICE FLOWCHART
--->
     <ol>
         <li>Set and connect the temporal database (mapset specific): <a href="https://grass.osgeo.org/grass72/manuals/t.connect.html" target="_blank">t.connect</a></li>
         <li>Create the STDS (raster, vector or raster 3D): <a href="https://grass.osgeo.org/grass72/manuals/t.create.html" target="_blank">t.create</a></li>
@@ -477,7 +474,9 @@ d.text -b text="LST Day from MOD11B3.006 - North Carolina - March, 2015" \
  color=black bgcolor=229:229:229 align=cc font=sans size=8
         </code>
         <code class="gui">
-        <!-- # add image: could really cool to have a video or a animated gif that show all the steps -->
+        <video controls>
+			<source src="figures/gui_display_map.ogg" type="video/ogg">
+		</video> 
 		</code>
     </pre>
     <p style="text-align:center">
@@ -997,27 +996,37 @@ gmod.Module("v.db.select", map="geology_aggr_lst", file="ts_polygons.csv")
     </pre>
     </p>
     <h3>Temporal data visualization</h3>
+    <p>Aside from g.gui.timeline that we saw before, GRASS GIS offers different options to visualize time series data. The first one is <a href="https://grass.osgeo.org/grass72/manuals/g.gui.mapswipe.html" target="_blank">g.gui.mapswipe</a> that allows us to compare two maps from different dates for example by swiping a visibility bar. The module can be called from command line by specifying the two maps to compare or executed from the GUI as shown below in the respective tabs.</p>
     <pre>
         <code class="neutral">
 g.gui.mapswipe first=LST_Day_monthly_celsius_6 second=LST_Day_monthly_celsius_12
         </code>
         <code class="gui">
-1. Select first and second map.
-2. Swipe as desired. Optionally you can change the swipe orientation or switch maps in the tools button.  
+1. Select first and second map from the dropdown map lists.
+2. Swipe as desired. Optionally you can change the swipe orientation or switch maps with the tools button.  
 3. Change to "Mirror mode" to see the exact same position in both maps.
     <div class="imagebox">
-        <img style="width: 50%;" src="figures/g_gui_mapswipe_1.png" alt="g.gui.mapswipe first" title="g.gui.mapswipe first step"><br> 
+        <img style="width: 55%;" src="figures/g_gui_mapswipe_1.png" alt="g.gui.mapswipe first" title="g.gui.mapswipe first step"><br> 
         <img style="width: 60%;" src="figures/g_gui_mapswipe_2.png" alt="g.gui.mapswipe second" title="g.gui.mapswipe second step"><br>
         <img style="width: 60%;" src="figures/g_gui_mapswipe_3.png" alt="g.gui.mapswipe third" title="g.gui.mapswipe third step"><br>
     </div> 
-
 		</code>
     </pre>
+    <p>Another tool to visualize time series in more dynamic way and that allows us to see changes in space an time simultaneously is <a href="https://grass.osgeo.org/grass72/manuals/g.gui.animation.html" target="_blank">g.gui.animation</a>. It also allows to animate vector time series, as well as lists of raster or vector maps not specifically registered as time series. When executed from command line, options are more limited than when the module is run from the GUI, where it is possible to add different decorations and customize several options.</p>
     <pre>
         <code class="neutral">
 g.gui.animation strds=LST_Day_monthly_celsius@modis_lst
         </code>
         <code class="gui">
+1. Add a new animation (you can add up to 4 animations).
+2, 3, 4. Add a space time data set (vector or raster) or list of raster or vector maps.
+5. Add a vector map (optional).
+6. Once you finished adding maps and customizing their display, click OK.
+7. Play the animation (note that you can move forwards or backwards, pause, stop, change velocity).
+8. Export the animation.
+9. Add decorations such as text, time stamp, images, if desired.
+10. Select folder and file name (Note that this step slightly varies according to the output format desired).
+11. Click Export.
     <div class="imagebox">
         <img style="width: 60%;" src="figures/g_gui_animation_1.png" alt="g.gui.animation first" title="g.gui.animation first step"><br> 
         <img style="width: 60%;" src="figures/g_gui_animation_2.png" alt="g.gui.animation second" title="g.gui.animation second step"><br>
@@ -1026,15 +1035,18 @@ g.gui.animation strds=LST_Day_monthly_celsius@modis_lst
     </div> 
 		</code>
     </pre>
+    <p>Finally, if you want to plot the time series of our variable of interest, be it in a STRDS or a STVDS, for a specific point of your study region, GRASS GIS has <a href="https://grass.osgeo.org/grass72/manuals/g.gui.tplot.html" target="_blank">g.gui.tplot</a>. Basically, you need to set the strds or stvds and a pair of X,Y coordinates. The latter can be typed directly, copied from the map display and pasted or directly chosen from the display. See instructions below.</p>
     <pre>
         <code class="neutral">
 g.gui.tplot strds=LST_Day_monthly_celsius@modis_lst coordinates=419604.018913,215736.80063
         </code>
         <code class="gui">
 1. Select the STRDS.
-2. Type coordinates or select a point in the display.
+2. Type coordinates or select a point in the display (use the arrow at the end of the second line).
 3. Click Draw.
 4. Inspect values for specific dates.
+
+Alternatively, you can adjust the margin settings, zoom in to different parts of the plots and save it.
     <div class="imagebox">
         <img style="width: 50%;" src="figures/g_gui_tplot_1.png" alt="g.gui.tplot first" title="g.gui.tplot first step"><br> 
         <img style="width: 60%;" src="figures/g_gui_tplot_2.png" alt="g.gui.tplot second" title="g.gui.tplot second step"><br>
@@ -1060,6 +1072,14 @@ g.gui.tplot strds=LST_Day_monthly_celsius@modis_lst coordinates=419604.018913,21
     </ul>
     </p>
     <hr>
+    <p><i>Last changed: 2017-07-09 20:12</i>
+    <p>
+    <a href="http://grass.osgeo.org/grass72/manuals/">GRASS GIS manual main index</a> |
+    <a href="http://grass.osgeo.org/grass72/manuals/temporal.html">Temporal modules index</a> |
+    <a href="http://grass.osgeo.org/grass72/manuals/topics.html">Topics index</a> |
+    <a href="http://grass.osgeo.org/grass72/manuals/keywords.html">Keywords Index</a> |
+    <a href="http://grass.osgeo.org/grass72/manuals/full_index.html">Full index</a>
+    </p>
   </div>
 
 </body>
