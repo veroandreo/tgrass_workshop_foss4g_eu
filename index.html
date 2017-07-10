@@ -403,7 +403,7 @@ from subprocess import PIPE
 HOME=os.path.expanduser('~')
 
 # Create folder to store .hdf files
-os.makedirs(lst_monthly)
+os.makedirs(os.path.join(HOME, lst_monthly))
 
 # Download data: MOD11B3 2015-2016, tile h11v05
 gmod.Module("r.modis.download", flags="g", settings=os.path.join(HOME, 'gisdata', 'SETTING'),
