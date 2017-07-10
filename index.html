@@ -654,27 +654,6 @@ name|start_time
 MOD11B3.A2015152.h11v05.single_LST_Day_6km|2015-06-01 00:00:00
 MOD11B3.A2016153.h11v05.single_LST_Day_6km|2016-06-01 00:00:00
         </code>
-        <code class="bash">
-# Maps with minimum value lower than or equal to 14000
-t.rast.list input=LST_Day_monthly order=min \
- columns=name,start_time,min where="min <= '14000'"
-
-# Maps with maximum value higher than 14000
-t.rast.list input=LST_Day_monthly order=max \
- columns=name,start_time,max where="max > '14000'"
-
-# Maps between two given dates
-t.rast.list input=LST_Day_monthly columns=name,start_time \
- where="start_time >= '2015-05' and start_time <= '2015-08-01 00:00:00'"
-
-# Maps from January
-t.rast.list input=LST_Day_monthly columns=name,start_time \
- where="strftime('%m', start_time)='01'"
-
-# Maps from June, 1st
-t.rast.list input=LST_Day_monthly columns=name,start_time \
- where="strftime('%m-%d', start_time)='06-01'"
-        </code>
     </pre>
     <p>
 	To explore a bit more our time series, we will obtain univariate statistics for the maps in the STRDS. There's a dedicated module for that: <a href="https://grass.osgeo.org/grass72/manuals/t.rast.univar.html" target="_blank">t.rast.univar</a>. There's also the possibility to obtain extended statistics such as first quartile, median value, third quartile and percentile 90 by setting the <tt>e</tt> flag. Let's see:</p>
