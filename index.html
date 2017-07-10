@@ -300,7 +300,7 @@ r.colors(map=output, color="elevation")
     The granularity is the largest common divider granule of time intervals and gaps between intervals or instances from all time stamped maps that are collected in a STDS. It is represented as a number of seconds, minutes, hours, days, weeks, months or years.
 
     <h3>Workflow overview</h3>
-    Now, how do we work with time series in GRASS GIS? Where do we start? Well, assuming we already have our maps in the GRASSDBASE, the first step is to set the connection to the temporal database. This is something we will need to do only once per mapset. After that, we create the STDSs, i.e.: the containers for the time series, and finally we assign time stamps to maps and register them in the STDS. After these basic steps, the following will depend on our specific objectives.    
+    Now, how do we work with time series in GRASS GIS? Where do we start? Well, assuming we already have our maps in the GRASSDBASE, the first step is to set the connection to the temporal database. This is something we will need to do only once per mapset. After that, we create the STDSs, i.e.: the containers for the time series, and finally we assign time stamps to maps and register them in the STDS. After these basic steps, the following will depend on our specific objectives.
     <ol>
         <li>Set and connect the temporal database (mapset specific): <a href="https://grass.osgeo.org/grass72/manuals/t.connect.html" target="_blank">t.connect</a></li>
         <li>Create the STDS (raster, vector or raster 3D): <a href="https://grass.osgeo.org/grass72/manuals/t.create.html" target="_blank">t.create</a></li>
@@ -476,7 +476,7 @@ d.text -b text="LST Day from MOD11B3.006 - North Carolina - March, 2015" \
         <code class="gui">
         <video controls>
 			<source src="figures/gui_display_map.ogg" type="video/ogg">
-		</video> 
+		</video>
 		</code>
     </pre>
     <p style="text-align:center">
@@ -567,7 +567,7 @@ t.register -i input=LST_Day_monthly \
     </pre>
     <p>Let's check now the basic info again to see how it looks like and list the raster maps in our <tt>LST_Day_monthly</tt> STRDS:</p>
     <pre>
-        <code class="neutral">               
+        <code class="neutral">
 t.info LST_Day_monthly
 t.rast.list LST_Day_monthly
         </code>
@@ -593,14 +593,14 @@ tgis.list_maps_of_stds("strds", "LST_Day_monthly@modis_lst", "name,mapset,start_
 g.gui.timeline inputs=LST_Day_monthly
         </code>
         <code class="gui">
-The tool g.gui.timeline is under the <em>Temporal</em> menu, in <em>GUI Tools</em> section. It can also be called from the terminal with: <tt>g.gui.timeline --ui</tt>. 
+The tool g.gui.timeline is under the <em>Temporal</em> menu, in <em>GUI Tools</em> section. It can also be called from the terminal with: <tt>g.gui.timeline --ui</tt>.
 
 To plot a STDS:
 1. Choose a STRDS from the dropdown list.
-2. Click the <em>Draw</em> button. 
+2. Click the <em>Draw</em> button.
 3. Change the margin settings.
 
-Alternatively, you can also get a 3D representation of the STDS (i.e.: x, y and time) by checking the 3D box. 
+Alternatively, you can also get a 3D representation of the STDS (i.e.: x, y and time) by checking the 3D box.
 <div class="imagebox">
 <img style="width: 80%;" src="figures/workflow_g_gui_timeline.png" alt="Workflow for plotting STRDS with g.gui.timeline" title="Workflow for plotting STRDS with g.gui.timeline"><br>
 Workflow for plotting STRDS with g.gui.timeline
@@ -1003,13 +1003,13 @@ g.gui.mapswipe first=LST_Day_monthly_celsius_6 second=LST_Day_monthly_celsius_12
         </code>
         <code class="gui">
 1. Select first and second map from the dropdown map lists.
-2. Swipe as desired. Optionally you can change the swipe orientation or switch maps with the tools button.  
+2. Swipe as desired. Optionally you can change the swipe orientation or switch maps with the tools button.
 3. Change to "Mirror mode" to see the exact same position in both maps.
     <div class="imagebox">
-        <img style="width: 55%;" src="figures/g_gui_mapswipe_1.png" alt="g.gui.mapswipe first" title="g.gui.mapswipe first step"><br> 
+        <img style="width: 55%;" src="figures/g_gui_mapswipe_1.png" alt="g.gui.mapswipe first" title="g.gui.mapswipe first step"><br>
         <img style="width: 60%;" src="figures/g_gui_mapswipe_2.png" alt="g.gui.mapswipe second" title="g.gui.mapswipe second step"><br>
         <img style="width: 60%;" src="figures/g_gui_mapswipe_3.png" alt="g.gui.mapswipe third" title="g.gui.mapswipe third step"><br>
-    </div> 
+    </div>
 		</code>
     </pre>
     <p>Another tool to visualize time series in more dynamic way and that allows us to see changes in space an time simultaneously is <a href="https://grass.osgeo.org/grass72/manuals/g.gui.animation.html" target="_blank">g.gui.animation</a>. It also allows to animate vector time series, as well as lists of raster or vector maps not specifically registered as time series. When executed from command line, options are more limited than when the module is run from the GUI, where it is possible to add different decorations and customize several options.</p>
@@ -1028,11 +1028,11 @@ g.gui.animation strds=LST_Day_monthly_celsius@modis_lst
 10. Select folder and file name (Note that this step slightly varies according to the output format desired).
 11. Click Export.
     <div class="imagebox">
-        <img style="width: 60%;" src="figures/g_gui_animation_1.png" alt="g.gui.animation first" title="g.gui.animation first step"><br> 
+        <img style="width: 60%;" src="figures/g_gui_animation_1.png" alt="g.gui.animation first" title="g.gui.animation first step"><br>
         <img style="width: 60%;" src="figures/g_gui_animation_2.png" alt="g.gui.animation second" title="g.gui.animation second step"><br>
         <img style="width: 60%;" src="figures/g_gui_animation_3.png" alt="g.gui.animation third" title="g.gui.animation third step"><br>
         <img style="width: 60%;" src="figures/g_gui_animation_4.png" alt="g.gui.animation fourth" title="g.gui.animation fourth step"><br>
-    </div> 
+    </div>
 		</code>
     </pre>
     <p>Finally, if you want to plot the time series of our variable of interest, be it in a STRDS or a STVDS, for a specific point of your study region, GRASS GIS has <a href="https://grass.osgeo.org/grass72/manuals/g.gui.tplot.html" target="_blank">g.gui.tplot</a>. Basically, you need to set the strds or stvds and a pair of X,Y coordinates. The latter can be typed directly, copied from the map display and pasted or directly chosen from the display. See instructions below.</p>
@@ -1048,11 +1048,11 @@ g.gui.tplot strds=LST_Day_monthly_celsius@modis_lst coordinates=419604.018913,21
 
 Alternatively, you can adjust the margin settings, zoom in to different parts of the plots and save it.
     <div class="imagebox">
-        <img style="width: 50%;" src="figures/g_gui_tplot_1.png" alt="g.gui.tplot first" title="g.gui.tplot first step"><br> 
+        <img style="width: 50%;" src="figures/g_gui_tplot_1.png" alt="g.gui.tplot first" title="g.gui.tplot first step"><br>
         <img style="width: 60%;" src="figures/g_gui_tplot_2.png" alt="g.gui.tplot second" title="g.gui.tplot second step"><br>
         <img style="width: 60%;" src="figures/g_gui_tplot_3.png" alt="g.gui.tplot third" title="g.gui.tplot third step"><br>
         <img style="width: 40%;" src="figures/g_gui_tplot_4.png" alt="g.gui.tplot fourth" title="g.gui.tplot fourth step"><br>
-    </div> 
+    </div>
 		</code>
     </pre>
     <h2>Other (very) useful links</h2>
@@ -1072,7 +1072,8 @@ Alternatively, you can adjust the margin settings, zoom in to different parts of
     </ul>
     </p>
     <hr>
-    <p><i>Last changed: 2017-07-09 20:12</i>
+    <p><img src="ccbysa.png" style="padding-right:5px;vertical-align: middle"/><b><a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a></b> - Thanks to <a href="http://www4.ncsu.edu/~vpetras/index.html" target="_blank"><b>Vaclav Petras</b></a> for the style.</p>
+    <p><i>Last changed: 2017-07-09 20:12</i></p>
     <p>
     <a href="http://grass.osgeo.org/grass72/manuals/">GRASS GIS manual main index</a> |
     <a href="http://grass.osgeo.org/grass72/manuals/temporal.html">Temporal modules index</a> |
