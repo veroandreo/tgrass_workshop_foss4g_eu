@@ -188,7 +188,7 @@
     <h4>Graphical User Interface</h4>
     The GUI is the simpler way to approach GRASS GIS. The <a href="https://grass.osgeo.org/grass72/manuals/wxGUI.html" target="_blank">GRASS GIS GUI</a> is composed of two elements, the <code>Layer Manager</code> where you can find all the GRASS GIS modules and manage your data and, the <code>Map Display</code> where you can navigate, print and query your maps. The GUI also comes with a Python shell for rapid prototyping.
     <div class="imagebox">
-        <img style="width: 70%;" src="figures/grass_gis_gui.png" alt="GRASS GIS GUI" title="GRASS GIS GUI"><br>
+        <img style="width: 90%;" src="figures/GUI_description.png" alt="GRASS GIS GUI" title="GRASS GIS GUI"><br>
         GRASS GIS Graphical User Interface (GUI)
     </div>
     Otherwise you can also use GRASS GIS inside QGIS by either using the <code>GRASS GIS plugin</code> or through <code>Processing</code>.
@@ -919,34 +919,7 @@ gmod.Module("t.info", input="LST_Day_mean_6month")
 gmod.Module("t.rast.list", input="LST_Day_mean_6month")
         </code>
     </pre>
-    <p>Now, we will extract the 3-month average LST for points in a vector map. We will use the vector map <tt>points_of_interest</tt> that is already available in the PERMANENT mapset of NC Location. There are different commands that allow us to perform this task, but we'll use <a href="https://grass.osgeo.org/grass72/manuals/v.what.strds.html" target="_blank">v.what.strds</a>. This module allows to extract values for more than one STRDS and (optionally) to write the output to the attribute table of the input vector map.</p>
-    <pre>
-        <code class="neutral">
-v.what.strds input=points_of_interest strds=LST_Day_mean_3month,LST_Day_mean_6month output=points_of_interest_lst
-v.db.select map=points_of_interest_lst file=ts_points.csv
-        </code>
-        <code class="bash">
-# Extract data from raster maps in the STRDSs and write to a new vector map
-v.what.strds input=points_of_interest strds=LST_Day_mean_3month,LST_Day_mean_6month \
- output=points_of_interest_lst
-
-# Save the attribute table of the new vector into a csv file
-v.db.select map=points_of_interest_lst file=ts_points.csv
-
-# Alternatively, update the attribute table of the input vector map
-v.what.strds -u input=points_of_interest strds=LST_Day_mean_3month,LST_Day_mean_6month
-v.db.select map=points_of_interest
-        </code>
-        <code class="python">
-# Extract data from raster maps in the STRDSs and write to a new vector map
-gmod.Module("v.what.strds", input="points_of_interest", output="points_of_interest_lst",
-            strds="LST_Day_mean_3month,LST_Day_mean_6month")
-
-# Save the attribute table of the new vector into a csv file
-gmod.Module("v.db.select", map="points_of_interest_lst", file="ts_points.csv")
-        </code>
-    </pre>
-    <p>Alternatively, we could use <a href="https://grass.osgeo.org/grass72/manuals/t.rast.what.html" target="_blank">t.rast.what</a> that samples a STRDS at specific vector point coordinates and writes the output to stdout using different layouts. For example:</p>
+    <p>Now, we will extract the 3-month average LST for points in a vector map. We will use the vector map <tt>points_of_interest</tt> that is already available in the PERMANENT mapset of NC Location. There are different commands that allow us to perform this task, but we'll use <a href="https://grass.osgeo.org/grass72/manuals/t.rast.what.html" target="_blank">t.rast.what</a>. This module samples a STRDS at specific vector point coordinates and writes the output to stdout using different layouts. You might explore the options available in the parameter <tt>layout</tt> to see the different ways to write the output.</p>
     <pre>
         <code class="neutral">
 t.rast.what points=points_of_interest strds=LST_Day_mean_6month output=trastwhat_output.csv null_value=NA separator=comma
@@ -960,7 +933,6 @@ gmod.Module("t.rast.what", points="points_of_interest", strds="LST_Day_mean_6mon
             output="trastwhat_output.csv", null_value="NA", separator="comma")
         </code>
     </pre>
-    <p>You might explore the options available in the parameter <tt>layout</tt> to see the different ways to write the output.</p>
     <p>Even though the most common is to extract raster data to points, we may also be interested in getting spatially aggregated time series data for polygons. GRASS GIS has an add-on for this: <a href="https://grass.osgeo.org/grass72/manuals/addons/v.strds.stats.html" target="_blank">v.strds.stats</a>. It calculates zonal statistics of each raster in a STRDS and writes the output to the attribute table of a new polygon vector map. We first need to install the add-on through <a href="https://grass.osgeo.org/grass72/manuals/g.extension.html">g.extension</a>. Then, we will extract the average, minimum and maximum monthly LST for the different geologic types in NC.</p>
     <pre>
         <code class="neutral">
