@@ -103,7 +103,6 @@
 
     <h3>Modules</h3>
     GRASS GIS is composed of more than 450 modules to perform any kind of GIS analysis. It is possible to analize raster, raster 3D, imagery and vector maps along with their alphanumerical attributes.<br>
-    It is also possible to install further modules, called <b>Add-ons</b>, from a centralized repository at OSGeo or from github using the command <a href="https://grass.osgeo.org/grass72/manuals/g.extension.html">g.extension</a>.
     The wealth of modules is organized by their first name in order to easily find the desired functionality. The graphical user interface offers a tree view as well as a search engine.
     <p>
     <table style="width:80%" border="1" align="center" bgcolor="#FFFFFF">
@@ -169,10 +168,12 @@
 		  <td><a href="https://grass.osgeo.org/grass72/manuals/t.rast.aggregate.html" target="_blank">t.rast.aggregate</a>: raster time series aggregation</td>
       </tr>
     </table>
+    <p>
+    It is also possible to install further modules, called <b>Add-ons</b>, from a centralized <a href="https://grass.osgeo.org/grass7/manuals/addons/">GRASS GIS Add-on repository</a> at OSGeo or from github using the command <a href="https://grass.osgeo.org/grass72/manuals/g.extension.html">g.extension</a>.
 
     <h3>Region and Mask</h3>
     The <b>computational (or current) region</b> is the <i>actual setting of the region boundaries and the actual raster resolution</i>.<br>
-    The raster input maps are automatically cropped/padded and rescaled to match the current region, the output maps have their bounds and resolution equal to those of the current computational region, while vector maps are always considered completely.
+    The raster input maps are automatically (on the fly) cropped/padded and rescaled to match the current region, the output maps have their bounds and resolution equal to those of the current computational region, while vector maps are always considered completely.
     <div class="imagebox">
         <img style="width: 60%;" src="figures/region.png" alt="Show computational region" title="Show computational region"><br>
         The red box shows the computational region currently set
@@ -479,7 +480,7 @@ d.text -b text="LST Day from MOD11B3.006 - North Carolina - March, 2015" \
     <p style="text-align:center">
     <div class="imagebox">
         <img style="width: 70%;" src="figures/mod11b3_nc.png" alt="display LST map with decorations" title="display LST map with decorations"><br>
-        MODIS LST map with decorations
+        MODIS LST map with decorations (scaled Kelvin pixel values)
     </div>
     </p>
 
@@ -703,14 +704,14 @@ tgis.print_gridded_dataset_univar_statistics("strds", "LST_Day_monthly@modis_lst
     <p>To transform all the maps in our <tt>LST_Day_monthly</tt> time series into &deg;C we will use the <a href="https://grass.osgeo.org/grass72/manuals/t.rast.algebra.html" target="_blank">t.rast.algebra</a> module. This module allows to perform a very wide variety of operations in the temporal and spatial domains, as well as much of the more <i>"classical"</i> operations already available in <a href="https://grass.osgeo.org/grass72/manuals/r.mapcalc.html" target="_blank">r.mapcalc</a>.</p>
     <pre>
         <code class="neutral">
-t.rast.algebra basename=LST_Day_monthly_celsius expression="LST_Day_monthly_celsius = LST_Day_monthly*0.02 - 273.15"
+t.rast.algebra basename=LST_Day_monthly_celsius expression="LST_Day_monthly_celsius = LST_Day_monthly * 0.02 - 273.15"
 t.rast.univar input=LST_Day_monthly_celsius
 t.rast.colors input=LST_Day_monthly_celsius color=celsius
         </code>
         <code class="bash">
 # Re-scale data into degrees Celsius
 t.rast.algebra basename=LST_Day_monthly_celsius \
- expression="LST_Day_monthly_celsius = (LST_Day_monthly*0.02) - 273.15"
+ expression="LST_Day_monthly_celsius = LST_Day_monthly * 0.02 - 273.15"
 
 # Print univariate stats
 t.rast.univar input=LST_Day_monthly_celsius
@@ -721,7 +722,7 @@ t.rast.colors input=LST_Day_monthly_celsius color=celsius
         <code class="python">
 # Re-scale data into degrees Celsius
 gmod.Module("t.rast.algebra", basename="LST_Day_monthly_celsius",
-            expression="LST_Day_monthly_celsius = (LST_Day_monthly*0.02) - 273.15")
+             expression="LST_Day_monthly_celsius = LST_Day_monthly * 0.02 - 273.15")
 
 # Print univarite statistics with the Python library
 tgis.print_gridded_dataset_univar_statistics("strds", "LST_Day_monthly_celsius@modis_lst", None, None, False, False, ",", False)
@@ -735,7 +736,7 @@ gmod.Module("t.rast.colors", input="LST_Day_monthly_celsius", color="celsius")
     <p>Alternatively, we could have used <a href="https://grass.osgeo.org/grass72/manuals/t.rast.mapcalc.html" target="_blank">t.rast.mapcalc</a> to perform the previous transformation. The command would look like this:</p>
     <pre>
         <code class="neutral">
-t.rast.mapcalc input=LST_Day_monthly output=LST_Day_monthly_celsius basename=LST_Day_monthly_celsius expression="LST_Day_monthly*0.02 - 273.15"
+t.rast.mapcalc input=LST_Day_monthly output=LST_Day_monthly_celsius basename=LST_Day_monthly_celsius expression="LST_Day_monthly * 0.02 - 273.15"
 		</code>
 	</pre>
 
