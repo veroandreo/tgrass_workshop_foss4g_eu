@@ -243,7 +243,7 @@ r.colors(map=output, color="elevation")
     <h3>Terminology overview</h3>
     <h4>Temporal database</h4>
     A temporal database is a mapset-specific database in which all time stamped maps are registered, i.e.: their spatial and temporal extents, unique ID and map type metadata are stored.
-    This allows users to perform complex SQL queries using the spatio-temporal extent and metadata information for map selection (See Temporal data analysis section).
+    This allows users to perform complex SQL queries using the spatio-temporal extent and metadata information for map selection (See <a href=#temporal_analysis>Temporal data analysis</a> section).
     <h4>Space-time datasets</h4>
     Space-time datasets are called differently according to the map type they are formed of:
     <ul>
@@ -254,13 +254,13 @@ r.colors(map=output, color="elevation")
 	<h4>Spatio-temporal modules</h4>
 	<ul>
 		<li><b>t.*</b>: General modules to handle STDS of all types</li>
-		<li><b>t.rast.*</b>: Modules that specifically process STRDS</li>
-		<li><b>t.rast3d.*</b>: Modules that specifically process STR3DS</li>
-		<li><b>t.vect.*</b>: Modules that specifically process STVDS</li>
+		<li><b>t.rast.*</b>: Modules that specifically deal with STRDS</li>
+		<li><b>t.rast3d.*</b>: Modules that specifically deal with STR3DS</li>
+		<li><b>t.vect.*</b>: Modules that specifically deal with STVDS</li>
 	</ul>
     <h4>Absolute time vs relative time</h4>
     <p>
-    Two time definitions are used in TGRASS:
+    Two different time definitions are used in TGRASS:
     <table style="width:60%" border="1" align="center" bgcolor="#FFFFFF">
       <tr>
         <th>Absolute time</th>
@@ -290,7 +290,7 @@ r.colors(map=output, color="elevation")
       </tr>
       <tr>
           <td>Support for gaps, allow overlapping, might contain time instances, might be irregularly spaced in time</td>
-          <td>Punctual event</td>
+          <td>Punctual events</td>
       </tr>
     </table>
     <h4>Granularity</h4>
@@ -417,7 +417,7 @@ glist = gmod.Module("g.list", type="raster", pattern="MOD11B3*", stdout_=PIPE, s
 print(glist.outputs["stdout"].value)
         </code>
     </pre>
-    <p>We will now visualize one of the MODIS LST images and add different map decorations. We first change the color palette from grey to viridis and set the computational region to the state of North Carolina (using <tt>boundary_state</tt> vector map).</p>
+    <p>We will now visualize one of the MODIS LST images and add different map decorations. We first change the color palette from <i>grey</i> to <i>viridis</i> and set the computational region to the state of North Carolina (using <tt>boundary_state</tt> vector map).</p>
     <p>
     <pre>
         <code class="neutral">
@@ -445,7 +445,7 @@ gmod.Module("g.region", flags="p", vector="boundary_state")
 gmod.Module("g.region", flags="p", raster="MOD11B3.A2015060.h11v05.single_LST_Day_6km")
         </code>
     </pre>
-    <p>We can open a monitor and run the commands from the command line or do everything in the main GUI and copy the commands for future reference or replication.</p>
+    <p>We can open a monitor and run the commands from the command line or do everything in the main GUI and copy the commands for future reference or replication. Note the <i>Copy</i> button in each command GUI.</p>
     <pre>
         <code class="neutral">
 # Open a monitor
@@ -596,7 +596,7 @@ The tool g.gui.timeline is under the <em>Temporal</em> menu, in <em>GUI Tools</e
 To plot a STDS:
 1. Choose a STRDS from the dropdown list.
 2. Click the <em>Draw</em> button.
-3. Change the margin settings.
+3. Change the margin settings as desired.
 
 Alternatively, you can also get a 3D representation of the STDS (i.e.: x, y and time) by checking the 3D box.
 <div class="imagebox">
@@ -610,7 +610,7 @@ Workflow for plotting STRDS with g.gui.timeline
         Timeline plot for LST_Day_monthly time series
     </div>
 
-    <h3>Temporal data analysis</h3>
+    <h3><a name="temporal_analysis" >Temporal data analysis</a></h3>
     <p>
 	One basic but very important function when handling hundreds or thousands of maps is the listing function, i.e.: we usually need to list maps that meet a certain condition. For example, we need maps which start month is June, maps with minimum values lower than 100, and so on. The GRASS GIS Temporal framework has different commands for that task: <a href="https://grass.osgeo.org/grass72/manuals/t.list.html" target="_blank">t.list</a> for listing STDS and maps registered in the temporal database, <a href="https://grass.osgeo.org/grass72/manuals/t.rast.list.html" target="_blank">t.rast.list</a> for maps in raster time series and, <a href="https://grass.osgeo.org/grass72/manuals/t.vect.list.html" target="_blank">t.vect.list</a> for maps in vector time series. All these commands allow us to list STDSs and/or maps according to different criteria. Let's see some examples with our <tt>LST_Day_monthly</tt> STRDS:</p>
     <pre>
@@ -701,7 +701,7 @@ tgis.print_gridded_dataset_univar_statistics("strds", "LST_Day_monthly@modis_lst
         </code>
     </pre>
     <p>However, those statistics are a bit difficult to directly interpret since values are in &deg;K*50. Let's re-scale the data to &deg;C and run the previous command again. Then, we will set a proper color palette for the STRDS and display one map. The latter, you already know how to do.</p>
-    <p>To transform all the maps in our <tt>LST_Day_monthly</tt> time series into &deg;C we will use the <a href="https://grass.osgeo.org/grass72/manuals/t.rast.algebra.html" target="_blank">t.rast.algebra</a> module. This module allows to perform a very wide variety of operations in the temporal and spatial domains, as well as much of the more <i>"classical"</i> operations already available in <a href="https://grass.osgeo.org/grass72/manuals/r.mapcalc.html" target="_blank">r.mapcalc</a>.</p>
+    <p>To transform all the maps in our <tt>LST_Day_monthly</tt> time series into &deg;C we will use the <a href="https://grass.osgeo.org/grass72/manuals/t.rast.algebra.html" target="_blank">t.rast.algebra</a> module. This module allows us to perform a very wide variety of operations in the temporal and spatial domains, as well as much of the more <i>"classical"</i> operations already available in <a href="https://grass.osgeo.org/grass72/manuals/r.mapcalc.html" target="_blank">r.mapcalc</a>.</p>
     <pre>
         <code class="neutral">
 t.rast.algebra basename=LST_Day_monthly_celsius expression="LST_Day_monthly_celsius = LST_Day_monthly * 0.02 - 273.15"
@@ -787,7 +787,7 @@ gmod.Module("r.colors", map="LST_Day_max", color="celsius")
         Maximum LST in the period 2015-2016 in North Carolina
     </div>
     </pre>
-    <p>Now, by means of the spatio-temporal algebra, we will get the month in which the absolute maximum LST occurred. For that, we will first compare our <tt>LST_Day_monthly_celsius</tt> STRDS with the map of absolute maximum LST <tt>LST_Day_max</tt> that we just obtained before. If they coincide, we keep the month for that pixel, otherwise it will be NULL. Then, we aggregate the resulting <tt>month_max_lst</tt> STRDS with <tt>t.rast.series method=maximum</tt> and we get the map with the pixelwise month in which the absolute maximum LST has occurred in the past two years. Finally, we remove the intermediate STRDS, since we are only interested in the aggregated map.</p>
+    <p>Now, by means of the spatio-temporal map calculator, we will get the month in which the absolute maximum LST occurred. For that, we will first compare our <tt>LST_Day_monthly_celsius</tt> STRDS with the map of absolute maximum LST <tt>LST_Day_max</tt> that we just obtained before. If they coincide, we keep the month for that pixel, otherwise it will be NULL. Then, we aggregate the resulting <tt>month_max_lst</tt> STRDS with <tt>t.rast.series method=maximum</tt> and we get the map with the pixelwise month in which the absolute maximum LST has occurred in the past two years. Finally, we remove the intermediate STRDS, since we are only interested in the aggregated map.</p>
     <pre>
         <code class="neutral">
 t.rast.mapcalc -n inputs=LST_Day_monthly_celsius output=month_max_lst expression="if(LST_Day_monthly_celsius == LST_Day_max, start_month(), null())" basename=month_max_lst
@@ -839,7 +839,7 @@ d.text -b text="Month of maximum LST 2015-2016" color=black bgcolor=229:229:229 
         <img style="width: 70%;" src="figures/month_max_lst.png" alt="Month of maximum LST" title="Month of maximum LST"><br>
         Month of maximum LST for the period 2015-2016
     </div>
-    <p>The other module that allows us to perform temporal aggregations is <a href="https://grass.osgeo.org/grass72/manuals/t.rast.aggregate.html" target="_blank">t.rast.aggregate</a>. With this module we are able to aggregate raster maps in our STRDS with different granularities. Note that this module also has the option <tt>where</tt> that allow us to set specific dates for the aggregation. We will use this module to get 3-month and 6-month average LST.</p>
+    <p>The other module that allows us to perform temporal aggregations is <a href="https://grass.osgeo.org/grass72/manuals/t.rast.aggregate.html" target="_blank">t.rast.aggregate</a>. With this module we are able to aggregate raster maps in our STRDS with different granularities. Note that this module also has the option <tt>where</tt> that allows us to set specific dates for the aggregation. We will use this module to get 3-month and 6-month average LST.</p>
     <pre>
         <code class="neutral">
 t.rast.aggregate input=LST_Day_monthly_celsius output=LST_Day_mean_3month basename=LST_Day_mean_3month suffix=gran method=average granularity="3 months"
@@ -969,7 +969,7 @@ g.gui.animation strds=LST_Day_monthly_celsius@modis_lst
         <code class="gui">
 1. Add a new animation (you can add up to 4 animations).
 2, 3, 4. Add a space time data set (vector or raster) or list of raster or vector maps.
-5. Add a vector map (optional).
+5. Optionally, add vector maps such as boundaries, points of interest, etc.
 6. Once you finished adding maps and customizing their display, click OK.
 7. Play the animation (note that you can move forwards or backwards, pause, stop, change velocity).
 8. Export the animation.
@@ -1021,7 +1021,7 @@ Alternatively, you can adjust the margin settings, zoom in to different parts of
     </ul>
     </p>
     <hr>
-    <p><i>Last changed: 2017-07-09 20:12</i></p>
+    <p><i>Last changed: 2017-07-17 20:17</i></p>
     <p>
     <a href="http://grass.osgeo.org/grass72/manuals/">GRASS GIS manual main index</a> |
     <a href="http://grass.osgeo.org/grass72/manuals/temporal.html">Temporal modules index</a> |
