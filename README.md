@@ -6,19 +6,22 @@ This repo was created for the workshop **TGRASS: temporal data processing with G
 Abstract
 --------
 
-GRASS GIS is a Free and Open Source geographic information system (GIS) with support for raster, 3D raster and vector data processing. It provides more than 450 core modules, plus hundreds of Add-ons, to run any kind of geographical analysis. GRASS GIS offers a useful graphical interface to work as in any other desktop software. However, the highest power of GRASS GIS resides in that it can be used also like a backend tool to run analysis in an automatic way, not only a personal computer, but also into HPC systems or via web services (WPS or scripting in several languages). The workshop will show the basics about GRASS GIS, it will be an intuitive mix of theoretical and hands-on sections. In the former, we will introduce the participants to some specific concepts of GRASS GIS, like its database structure, location, mapset and region and will show how simple the approach really is. During the hands-on part, the participants will learn how to use common geographical data formats in GRASS GIS, starting from simple actions like adding data into the GRASS GIS environment and displaying it. Finally, the participants will run simple analyses like map algebra calculations for raster maps and vector buffering and visualize and export the results.
+GRASS GIS is a general purpose Free and Open Source geographic information system (GIS) that offers raster, 3D raster and vector data processing support. Since the initial release of the version 7, in February 2015, GRASS GIS has also oficially incorporated a powerful support for time series (TGRASS). Through this, GRASS GIS became the first open source temporal GIS with comprehensive spatio-temporal analysis, processing and visualization capabilities. The new functionality makes it easy to manage, analyse and visualize for example climatic data, vegetation index time series, harvest data or landuse changes over time.
+Time series are handled through a new specific data type called space time data sets (stds) which are used as input in TGRASS modules. TGRASS incredibly simplifies the processing and analysis of large time series of hundreds of thousands of maps. For example, users can aggregate a daily time series into a monthly time series in just one line; get the date per year in which a certain value is reached; select maps from a time series in time periods in which a different time series reaches a certain value, perform different temporal as well as spatial operations among time series, and so much more.
+In this 4-hours workshop we will present and exemplify the use of a subset of the more than 45 temporal modules in combination with other GRASS GIS modules and Add-ons in a workflow starting from the download of remote sensing data to the creation of a simple model and visualization of results. We will go through the creation of time series (stds) and registration of maps, reconstruction of incomplete data, temporal aggregation, queries and obtaining of statistics, as well as  time series visualization and animation. Moreover, we will show how this workflow might be included in python scripts and executed from outside GRASS GIS. 
 
 First steps
 -----------
 
 Software requirements:
-* GRASS GIS 7.2: 
- * Stand-alone installer: https://grass.osgeo.org/download/software/
- * OSGeo-live: https://live.osgeo.org/
+* GRASS GIS 7.4: 
+  * Stand-alone installer: https://grass.osgeo.org/download/software/
+  * OSGeo-live: https://live.osgeo.org/
  
 * GRASS GIS Add-ons: 
- * r.modis: https://grass.osgeo.org/grass72/manuals/addons/r.modis
- * v.strds.stats: https://grass.osgeo.org/grass72/manuals/addons/v.strds.stats.html
+  * i.modis: https://grass.osgeo.org/grass74/manuals/addons/i.modis
+  * v.strds.stats: https://grass.osgeo.org/grass74/manuals/addons/v.strds.stats.html
+
 * pyModis library: http://www.pymodis.org
 
 Sample data:
